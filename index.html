@@ -35,14 +35,14 @@
                         <i class="fa-solid fa-bell"></i> Alerts
                     </button>
                     <nav class="flex bg-indigo-700/60 p-1 rounded-xl text-sm font-medium">
-                        <button onclick="switchTab('events')" id="btn-events" class="px-4 py-2 rounded-lg transition bg-white text-indigo-700 shadow-sm">
+                        <button onclick="switchTab('events')" id="btn-events" class="px-4 py-2 rounded-lg transition bg-white text-indigo-700 shadow-sm cursor-pointer">
                             <i class="fa-solid fa-calendar-days mr-1.5"></i> Events
                         </button>
-                        <button onclick="switchTab('studio')" id="btn-studio" class="px-4 py-2 rounded-lg transition text-indigo-100 hover:text-white">
+                        <button onclick="switchTab('studio')" id="btn-studio" class="px-4 py-2 rounded-lg transition text-indigo-100 hover:text-white cursor-pointer">
                             <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Wish Studio
                         </button>
                     </nav>
-                    <button onclick="lockOwnerDashboard()" title="Lock Dashboard" class="bg-rose-600 hover:bg-rose-700 text-white p-2 rounded-xl text-xs">
+                    <button onclick="lockOwnerDashboard()" title="Lock Dashboard" class="bg-rose-600 hover:bg-rose-700 text-white p-2 rounded-xl text-xs cursor-pointer">
                         <i class="fa-solid fa-lock-open"></i>
                     </button>
                 </div>
@@ -662,6 +662,13 @@
             window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${startDate}&details=${details}`, '_blank');
         }
 
+        function createPosterForEvent(id) {
+            switchTab('studio');
+            populateStudioDropdown();
+            document.getElementById('studio-event-select').value = id;
+            loadEventIntoStudio();
+        }
+
         function openAIModal() { document.getElementById('ai-modal').classList.remove('hidden'); }
         function closeAIModal() { document.getElementById('ai-modal').classList.add('hidden'); }
 
@@ -779,7 +786,12 @@
                         <p class="text-xs text-purple-600">Talents: ${ev.talents || 'N/A'}</p>
                         ${ev.photo ? '<p class="text-xs text-emerald-600 mt-1"><i class="fa-solid fa-image"></i> Photo included</p>' : ''}
                     </div>
-                    <button onclick="addToGoogleCalendar('${ev.id}')" class="mt-4 text-xs bg-blue-50 text-blue-700 font-semibold py-2 rounded-lg hover:bg-blue-100 transition cursor-pointer">Add to Calendar</button>
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="createPosterForEvent('${ev.id}')" class="flex-1 text-xs bg-indigo-50 text-indigo-700 font-semibold py-2 rounded-lg hover:bg-indigo-100 transition cursor-pointer flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Create Poster
+                        </button>
+                        <button onclick="addToGoogleCalendar('${ev.id}')" class="flex-1 text-xs bg-blue-50 text-blue-700 font-semibold py-2 rounded-lg hover:bg-blue-100 transition cursor-pointer">Add to Calendar</button>
+                    </div>
                 `;
                 grid.appendChild(card);
             });
