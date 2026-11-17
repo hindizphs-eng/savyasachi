@@ -26,7 +26,7 @@
             </div>
             <div class="flex items-center gap-2">
                 <div id="visitor-nav">
-                    <button onclick="promptOwnerLogin()" class="bg-indigo-700 hover:bg-indigo-800 text-white px-3.5 py-2 rounded-xl text-xs font-medium transition flex items-center gap-1.5 shadow-sm border border-indigo-500">
+                    <button type="button" onclick="promptOwnerLogin()" class="bg-indigo-700 hover:bg-indigo-800 text-white px-3.5 py-2 rounded-xl text-xs font-medium transition flex items-center gap-1.5 shadow-sm border border-indigo-500 cursor-pointer">
                         <i class="fa-solid fa-lock"></i> Owner Login
                     </button>
                 </div>
@@ -97,13 +97,13 @@
                     <input type="file" id="visitor-photo-input" accept="image/*,video/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 cursor-pointer">
                 </div>
 
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3.5 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-base">
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3.5 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-base cursor-pointer">
                     <i class="fa-solid fa-paper-plane"></i> Submit & Create Poster
                 </button>
             </form>
         </section>
 
-        <!-- ================= OWNER DASHBOARD & STUDIO VIEW ================= -->
+        <!-- ================= OWNER DASHBOARD VIEW (LOCKED/UNLOCKED) ================= -->
         <div id="view-owner" class="hidden space-y-6">
             <!-- TAB 1: EVENTS MANAGER -->
             <section id="tab-events" class="space-y-6">
@@ -125,7 +125,7 @@
                             <i class="fa-solid fa-file-arrow-up"></i> Import CSV
                             <input type="file" accept=".csv" onchange="handleCSVImport(event)" class="hidden">
                         </label>
-                        <button onclick="openEventModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-5 py-2.5 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm">
+                        <button onclick="openEventModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-5 py-2.5 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm cursor-pointer">
                             <i class="fa-solid fa-plus"></i> Add Event
                         </button>
                     </div>
@@ -147,7 +147,7 @@
                         <h2 class="font-bold text-slate-700 text-lg flex items-center gap-2">
                             <i class="fa-solid fa-photo-film text-indigo-600"></i> Wish Studio
                         </h2>
-                        <button onclick="openAIModal()" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm hover:opacity-90 transition flex items-center gap-1.5">
+                        <button onclick="openAIModal()" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm hover:opacity-95 transition flex items-center gap-1.5 cursor-pointer">
                             <i class="fa-solid fa-wand-magic-sparkles"></i> AI Wish Generator
                         </button>
                     </div>
@@ -270,7 +270,7 @@
                             <label class="block text-xs font-semibold text-slate-600 uppercase flex items-center gap-1.5">
                                 <i class="fa-solid fa-arrows-up-down-left-right text-indigo-600"></i> Manual Photo Framing
                             </label>
-                            <button onclick="resetImageFraming()" class="text-xs text-indigo-600 hover:underline font-medium"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+                            <button onclick="resetImageFraming()" class="text-xs text-indigo-600 hover:underline font-medium cursor-pointer"><i class="fa-solid fa-rotate-right"></i> Reset</button>
                         </div>
                         <div class="grid grid-cols-3 gap-2 text-xs">
                             <div>
@@ -289,10 +289,10 @@
                     </div>
 
                     <div class="flex gap-2">
-                        <button onclick="downloadPoster()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm">
+                        <button onclick="downloadPoster()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm cursor-pointer">
                             <i class="fa-solid fa-download"></i> Download Image
                         </button>
-                        <button onclick="shareViaWhatsApp()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm">
+                        <button onclick="shareViaWhatsApp()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm cursor-pointer">
                             <i class="fa-brands fa-whatsapp"></i> Share WhatsApp
                         </button>
                     </div>
@@ -319,7 +319,7 @@
                 <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2">
                     <i class="fa-solid fa-wand-magic-sparkles text-purple-600"></i> AI Wish Generator
                 </h3>
-                <button onclick="closeAIModal()" class="text-slate-400 hover:text-slate-600 text-xl"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="closeAIModal()" class="text-slate-400 hover:text-slate-600 text-xl cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="space-y-3 text-sm">
                 <div>
@@ -333,7 +333,7 @@
                     <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">API Key</label>
                     <input type="password" id="ai-api-key" placeholder="Enter Gemini or OpenAI API Key" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
-                <button onclick="generateAIWish()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium py-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+                <button onclick="generateAIWish()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium py-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2 cursor-pointer">
                     <i class="fa-solid fa-sparkles"></i> Generate AI Wish Message
                 </button>
             </div>
@@ -345,7 +345,7 @@
         <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 space-y-4">
             <div class="flex justify-between items-center border-b border-slate-100 pb-3">
                 <h3 id="modal-title" class="font-bold text-slate-800 text-lg">Add New Event</h3>
-                <button onclick="closeEventModal()" class="text-slate-400 hover:text-slate-600 text-xl"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="closeEventModal()" class="text-slate-400 hover:text-slate-600 text-xl cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
             <form id="event-form" onsubmit="saveOwnerEvent(event)" class="space-y-4">
@@ -386,8 +386,8 @@
                 </div>
 
                 <div class="flex gap-3 pt-2">
-                    <button type="button" onclick="closeEventModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium py-2.5 rounded-xl transition text-sm">Cancel</button>
-                    <button type="submit" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-xl shadow-sm transition text-sm">Save Event</button>
+                    <button type="button" onclick="closeEventModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium py-2.5 rounded-xl transition text-sm cursor-pointer">Cancel</button>
+                    <button type="submit" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-xl shadow-sm transition text-sm cursor-pointer">Save Event</button>
                 </div>
             </form>
         </div>
@@ -425,10 +425,15 @@
 
         function checkOwnerStatus() {
             const isUnlocked = localStorage.getItem('hub_owner_unlocked') === 'true';
-            document.getElementById('view-visitor').classList.toggle('hidden', isUnlocked);
-            document.getElementById('view-owner').classList.toggle('hidden', !isUnlocked);
-            document.getElementById('visitor-nav').classList.toggle('hidden', isUnlocked);
-            document.getElementById('owner-nav').classList.toggle('hidden', !isUnlocked);
+            const visitorView = document.getElementById('view-visitor');
+            const ownerView = document.getElementById('view-owner');
+            const visitorNav = document.getElementById('visitor-nav');
+            const ownerNav = document.getElementById('owner-nav');
+
+            if (visitorView) visitorView.classList.toggle('hidden', isUnlocked);
+            if (ownerView) ownerView.classList.toggle('hidden', !isUnlocked);
+            if (visitorNav) visitorNav.classList.toggle('hidden', isUnlocked);
+            if (ownerNav) ownerNav.classList.toggle('hidden', !isUnlocked);
         }
 
         function promptOwnerLogin() {
@@ -472,17 +477,17 @@
                     console.log("Cloud sync error:", err);
                 }
 
-                // Instantly unlock owner dashboard and take user directly to Wish Studio with this entry loaded!
+                // Automatically unlock owner dashboard & switch directly to Wish Studio with this entry loaded
                 localStorage.setItem('hub_owner_unlocked', 'true');
                 checkOwnerStatus();
                 switchTab('studio');
                 populateStudioDropdown();
 
-                // Pre-fill studio inputs
+                // Pre-fill Wish Studio inputs
                 document.getElementById('studio-event-select').value = id;
                 loadEventIntoStudio();
 
-                alert("🎉 Celebration submitted successfully! You can now customize your poster, or use Google Gemini / ChatGPT via AI Wish Generator.");
+                alert("🎉 Celebration submitted successfully! You can now customize your poster, download it, share via WhatsApp, or use AI.");
                 document.getElementById('visitor-form').reset();
             };
 
@@ -630,8 +635,8 @@
             const isEvents = tab === 'events';
             document.getElementById('tab-events').classList.toggle('hidden', !isEvents);
             document.getElementById('tab-studio').classList.toggle('hidden', isEvents);
-            document.getElementById('btn-events').className = isEvents ? "px-4 py-2 rounded-lg transition bg-white text-indigo-700 shadow-sm" : "px-4 py-2 rounded-lg transition text-indigo-100 hover:text-white";
-            document.getElementById('btn-studio').className = !isEvents ? "px-4 py-2 rounded-lg transition bg-white text-indigo-700 shadow-sm" : "px-4 py-2 rounded-lg transition text-indigo-100 hover:text-white";
+            document.getElementById('btn-events').className = isEvents ? "px-4 py-2 rounded-lg transition bg-white text-indigo-700 shadow-sm cursor-pointer" : "px-4 py-2 rounded-lg transition text-indigo-100 hover:text-white cursor-pointer";
+            document.getElementById('btn-studio').className = !isEvents ? "px-4 py-2 rounded-lg transition bg-white text-indigo-700 shadow-sm cursor-pointer" : "px-4 py-2 rounded-lg transition text-indigo-100 hover:text-white cursor-pointer";
             if(!isEvents) updateCanvasDimensions();
         }
 
@@ -764,8 +769,8 @@
                         <div class="flex justify-between items-start gap-2 mb-3">
                             <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">${ev.date}</span>
                             <div class="flex gap-1.5 text-slate-400">
-                                <button onclick="openEventModal('${ev.id}')" class="hover:text-indigo-600 p-1"><i class="fa-solid fa-pen text-xs"></i></button>
-                                <button onclick="deleteEvent('${ev.id}')" class="hover:text-rose-600 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
+                                <button onclick="openEventModal('${ev.id}')" class="hover:text-indigo-600 p-1 cursor-pointer"><i class="fa-solid fa-pen text-xs"></i></button>
+                                <button onclick="deleteEvent('${ev.id}')" class="hover:text-rose-600 p-1 cursor-pointer"><i class="fa-solid fa-trash text-xs"></i></button>
                             </div>
                         </div>
                         <h4 class="font-bold text-slate-800">${ev.name}</h4>
@@ -774,7 +779,7 @@
                         <p class="text-xs text-purple-600">Talents: ${ev.talents || 'N/A'}</p>
                         ${ev.photo ? '<p class="text-xs text-emerald-600 mt-1"><i class="fa-solid fa-image"></i> Photo included</p>' : ''}
                     </div>
-                    <button onclick="addToGoogleCalendar('${ev.id}')" class="mt-4 text-xs bg-blue-50 text-blue-700 font-semibold py-2 rounded-lg hover:bg-blue-100 transition">Add to Calendar</button>
+                    <button onclick="addToGoogleCalendar('${ev.id}')" class="mt-4 text-xs bg-blue-50 text-blue-700 font-semibold py-2 rounded-lg hover:bg-blue-100 transition cursor-pointer">Add to Calendar</button>
                 `;
                 grid.appendChild(card);
             });
