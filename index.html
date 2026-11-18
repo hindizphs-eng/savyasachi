@@ -1,27 +1,951 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>ZPHS MEDIPALLY NAKKARTHA - Home</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTMHS Celebration Hub - Submission Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .canvas-preview-box { max-width: 100%; max-height: 550px; cursor: grab; }
+        .canvas-preview-box:active { cursor: grabbing; }
+    </style>
 </head>
-<body>
-  <header>
-    <h1>ZPHS MEDIPALLY NAKKARTHA</h1>
-    <p>Welcome to our school website!</p>
-  </header>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="gallery.html">Gallery</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-  <section>
-    <h2>Welcome!</h2>
-    <p>We are proud to be one of the leading schools in our community, dedicated to excellence in education and building bright futures.</p>
-  </section>
-  <footer>
-    <p>© 2025 ZPHS MEDIPALLY NAKKARTHA. All rights reserved.</p>
-  </footer>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-indigo-600 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-3">
+                <div class="bg-white/10 p-2.5 rounded-xl text-2xl">🎉</div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight">GTMHS Celebration Hub</h1>
+                    <p class="text-xs text-indigo-200">Submit Your Celebrations & Special Talents</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <div id="visitor-nav">
+                    <button type="button" onclick="promptOwnerLogin()" class="bg-indigo-700 hover:bg-indigo-800 text-white px-3.5 py-2 rounded-xl text-xs font-medium transition flex items-center gap-1.5 shadow-sm border border-indigo-500 cursor-pointer">
+                        <i class="fa-solid fa-lock"></i> Owner Login
+                    </button>
+                </div>
+                <div id="owner-nav" class="hidden flex items-center gap-2">
+                    <button onclick="requestNotificationPermission()" class="bg-indigo-700 hover:bg-indigo-800 text-white px-3.5 py-2 rounded-xl text-xs font-medium transition flex items-center gap-1.5 shadow-sm border border-indigo-500">
+                        <i class="fa-solid fa-bell"></i> Alerts
+                    </button>
+                    <nav class="flex bg-indigo-700/60 p-1 rounded-xl text-sm font-medium">
+                        <button onclick="switchTab('events')" id="btn-events" class="px-4 py-2 rounded-lg transition bg-white text-indigo-700 shadow-sm cursor-pointer">
+                            <i class="fa-solid fa-calendar-days mr-1.5"></i> Events
+                        </button>
+                        <button onclick="switchTab('studio')" id="btn-studio" class="px-4 py-2 rounded-lg transition text-indigo-100 hover:text-white cursor-pointer">
+                            <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Wish Studio
+                        </button>
+                    </nav>
+                    <button onclick="lockOwnerDashboard()" title="Lock Dashboard" class="bg-rose-600 hover:bg-rose-700 text-white p-2 rounded-xl text-xs cursor-pointer">
+                        <i class="fa-solid fa-lock-open"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 py-6 flex-grow w-full">
+
+        <!-- ================= VISITOR SUBMISSION VIEW (DEFAULT) ================= -->
+        <section id="view-visitor" class="max-w-xl mx-auto bg-white p-8 rounded-3xl shadow-lg border border-slate-100 space-y-6 my-6">
+            <div class="text-center space-y-2">
+                <div class="inline-block bg-indigo-50 text-indigo-600 p-3 rounded-2xl text-3xl mb-1">✨</div>
+                <h2 class="text-2xl font-bold text-slate-800">Share Your Celebration</h2>
+                <p class="text-sm text-slate-500">Submit your upcoming Birthday, Anniversary, and Special Talents to be featured!</p>
+            </div>
+
+            <form id="visitor-form" onsubmit="submitVisitorEvent(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Your Name / Couple Name</label>
+                    <input type="text" id="visitor-name" required placeholder="e.g. Rahul Sharma" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Event Type</label>
+                        <select id="visitor-type" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                            <option value="Birthday">🎂 Birthday</option>
+                            <option value="Marriage Anniversary">💍 Marriage Anniversary</option>
+                            <option value="Special Event">⭐ Special Event</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Date</label>
+                        <input type="date" id="visitor-date" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">C/O (Submitted By / Reference)</label>
+                    <input type="text" id="visitor-co" required placeholder="e.g. Savyasachi" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Special Talents</label>
+                    <input type="text" id="visitor-talents" placeholder="e.g. Singing, Oratory, Coding" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Photo / Media (Optional)</label>
+                    <input type="file" id="visitor-photo-input" accept="image/*,video/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 cursor-pointer">
+                </div>
+
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3.5 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-base cursor-pointer">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Celebration
+                </button>
+            </form>
+        </section>
+
+        <!-- ================= OWNER DASHBOARD VIEW (LOCKED/UNLOCKED) ================= -->
+        <div id="view-owner" class="hidden space-y-6">
+            <!-- TAB 1: EVENTS MANAGER -->
+            <section id="tab-events" class="space-y-6">
+                <div id="alerts-banner" class="hidden bg-gradient-to-r from-amber-500 to-orange-500 text-white p-4 rounded-2xl shadow-lg flex items-start gap-3">
+                    <i class="fa-solid fa-bell text-2xl mt-0.5 animate-bounce"></i>
+                    <div class="flex-grow">
+                        <h3 class="font-bold text-base">Upcoming Celebrations!</h3>
+                        <div id="alerts-list" class="text-sm mt-1 space-y-1"></div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="relative flex-grow max-w-md">
+                        <i class="fa-solid fa-search absolute left-3.5 top-3.5 text-slate-400"></i>
+                        <input type="text" id="search-input" oninput="renderEvents()" placeholder="Search by name, event, C/O, or talents..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div class="flex items-center gap-2.5">
+                        <label class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-medium px-4 py-2.5 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm cursor-pointer border border-emerald-200" title="CSV Format: name, type, date, submittedBy, talents, photo">
+                            <i class="fa-solid fa-file-arrow-up"></i> Import CSV
+                            <input type="file" accept=".csv" onchange="handleCSVImport(event)" class="hidden">
+                        </label>
+                        <button onclick="openEventModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-5 py-2.5 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm cursor-pointer">
+                            <i class="fa-solid fa-plus"></i> Add Event
+                        </button>
+                    </div>
+                </div>
+
+                <div id="events-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                
+                <div id="empty-state" class="hidden text-center py-16 bg-white rounded-2xl border border-dashed border-slate-200">
+                    <i class="fa-solid fa-cake-candles text-4xl text-slate-300 mb-3"></i>
+                    <h3 class="font-semibold text-slate-600">No events saved yet</h3>
+                    <p class="text-sm text-slate-400 mt-1">Import your CSV file or add events manually.</p>
+                </div>
+            </section>
+
+            <!-- TAB 2: WISH STUDIO -->
+            <section id="tab-studio" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-5 bg-white p-5 rounded-2xl shadow-sm border border-slate-100 space-y-4 max-h-[85vh] overflow-y-auto">
+                    <div class="flex justify-between items-center sticky top-0 bg-white py-1 z-10 border-b border-slate-100">
+                        <h2 class="font-bold text-slate-700 text-lg flex items-center gap-2">
+                            <i class="fa-solid fa-photo-film text-indigo-600"></i> Wish Studio
+                        </h2>
+                        <button onclick="openAIModal()" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm hover:opacity-95 transition flex items-center gap-1.5 cursor-pointer">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> AI Wish Generator
+                        </button>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Select Event (Optional)</label>
+                        <select id="studio-event-select" onchange="loadEventIntoStudio()" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                            <option value="">-- Choose from saved events --</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Poster Format</label>
+                            <select id="studio-format" onchange="updateCanvasDimensions();" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                                <option value="square">Square (1:1)</option>
+                                <option value="portrait" selected>Portrait (4:5)</option>
+                                <option value="story">Story / Status (9:16)</option>
+                                <option value="landscape">Landscape (16:9)</option>
+                                <option value="postcard">Postcard (3:2)</option>
+                                <option value="banner">Wide Banner (2:1)</option>
+                                <option value="insta">Instagram (4:3)</option>
+                                <option value="a4">A4 Document</option>
+                                <option value="wallpaper">Phone Wallpaper</option>
+                                <option value="badge_fmt">Circle Badge</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Design Layout</label>
+                            <select id="studio-layout" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                                <option value="classic">1. Classic Royal</option>
+                                <option value="polaroid">2. Polaroid Frame</option>
+                                <option value="modern">3. Modern Split</option>
+                                <option value="minimalist">4. Minimalist Elegant</option>
+                                <option value="badge">5. Ribbon & Badge</option>
+                                <option value="neon_glow">6. Neon Glow Frame</option>
+                                <option value="vintage_news">7. Vintage Newspaper</option>
+                                <option value="floral_frame">8. Floral Garden</option>
+                                <option value="golden_elegance">9. Golden Elegance</option>
+                                <option value="cyberpunk_hud">10. Cyberpunk HUD</option>
+                                <option value="starlight_arch">11. Starlight Arch</option>
+                                <option value="double_border">12. Double Border</option>
+                                <option value="heartfelt_locket">13. Heartfelt Locket</option>
+                                <option value="geometric_art">14. Geometric Art Deco</option>
+                                <option value="magazine_cover">15. Magazine Cover</option>
+                                <option value="royal_crest">16. Royal Crest</option>
+                                <option value="floating_bubble">17. Floating Bubble</option>
+                                <option value="cosmic_portal">18. Cosmic Portal</option>
+                                <option value="polaroid_stack">19. Polaroid Stack</option>
+                                <option value="minimal_card">20. Minimal Card</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Person Name</label>
+                        <input type="text" id="studio-name" placeholder="e.g. Aarav Sharma" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Occasion / Title</label>
+                            <input type="text" id="studio-occasion" value="Happy Birthday!" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">C/O (Submitted By)</label>
+                            <input type="text" id="studio-co" placeholder="e.g. Savyasachi" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Special Talents</label>
+                        <input type="text" id="studio-talents" placeholder="e.g. Oratory, Singing, Coding" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Custom Wish Message</label>
+                        <textarea id="studio-message" rows="2" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">Wishing you a wonderful year ahead filled with happiness and success!</textarea>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Background Style</label>
+                            <select id="studio-bg-type" onchange="toggleBackgroundControls()" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                                <option value="sunset">1. Sunset Glow</option>
+                                <option value="royal">2. Royal Indigo</option>
+                                <option value="emerald">3. Emerald Spring</option>
+                                <option value="rose">4. Rose Gold</option>
+                                <option value="golden">5. Golden Luxury</option>
+                                <option value="cyberpunk">6. Neon Cyberpunk</option>
+                                <option value="pastel">7. Pastel Dream</option>
+                                <option value="midnight">8. Midnight Velvet</option>
+                                <option value="ruby">9. Ruby Red</option>
+                                <option value="sapphire">10. Sapphire Blue</option>
+                                <option value="confetti">11. Confetti & Sparkles</option>
+                                <option value="bokeh">12. Glowing Bokeh</option>
+                                <option value="hearts">13. Falling Hearts</option>
+                                <option value="stars">14. Floating Stars</option>
+                                <option value="dust">15. Golden Dust</option>
+                                <option value="matrix">16. Matrix Rain</option>
+                                <option value="polygons">17. Polygons</option>
+                                <option value="prisms">18. Rainbow Prisms</option>
+                                <option value="fireworks">19. Fireworks</option>
+                                <option value="custom">20. Custom Upload</option>
+                            </select>
+                        </div>
+                        <div id="custom-bg-box" class="hidden">
+                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Upload BG</label>
+                            <input type="file" id="studio-bg-input" accept="image/*,video/*" onchange="handleBackgroundMedia(event)" class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-2 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 cursor-pointer">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Subject Photo / GIF</label>
+                        <input type="file" id="studio-photo-input" accept="image/*,video/*" onchange="handleStudioPhoto(event)" class="w-full text-xs text-slate-500 file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 cursor-pointer">
+                    </div>
+
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2.5">
+                        <div class="flex justify-between items-center">
+                            <label class="block text-xs font-semibold text-slate-600 uppercase flex items-center gap-1.5">
+                                <i class="fa-solid fa-arrows-up-down-left-right text-indigo-600"></i> Manual Photo Framing
+                            </label>
+                            <button onclick="resetImageFraming()" class="text-xs text-indigo-600 hover:underline font-medium cursor-pointer"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 text-xs">
+                            <div>
+                                <span class="text-slate-500 font-medium">Zoom: <span id="val-zoom">1.0</span>x</span>
+                                <input type="range" id="studio-zoom" min="0.5" max="3.0" step="0.05" value="1.0" oninput="updateImageFraming()" class="w-full accent-indigo-600 mt-1">
+                            </div>
+                            <div>
+                                <span class="text-slate-500 font-medium">Pan X: <span id="val-panx">0</span>px</span>
+                                <input type="range" id="studio-panx" min="-300" max="300" step="5" value="0" oninput="updateImageFraming()" class="w-full accent-indigo-600 mt-1">
+                            </div>
+                            <div>
+                                <span class="text-slate-500 font-medium">Pan Y: <span id="val-pany">0</span>px</span>
+                                <input type="range" id="studio-pany" min="-300" max="300" step="5" value="0" oninput="updateImageFraming()" class="w-full accent-indigo-600 mt-1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button onclick="downloadPoster()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm cursor-pointer">
+                            <i class="fa-solid fa-download"></i> Download Image
+                        </button>
+                        <button onclick="shareViaWhatsApp()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm cursor-pointer">
+                            <i class="fa-brands fa-whatsapp"></i> Share WhatsApp
+                        </button>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 flex flex-col items-center justify-center bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="flex justify-between w-full mb-3 items-center">
+                        <span class="text-xs font-semibold text-slate-400 uppercase">Live Preview & Drag to Pan</span>
+                        <span class="text-xs bg-emerald-100 text-emerald-700 px-2.5 py-0.5 rounded-full font-medium animate-pulse">● Live Render Active</span>
+                    </div>
+                    <div id="preview-container" class="w-full flex items-center justify-center bg-slate-900 rounded-2xl p-3 shadow-xl overflow-hidden canvas-preview-box">
+                        <canvas id="wish-canvas" class="max-h-full max-w-full object-contain rounded-lg shadow-md"></canvas>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- AI WISH GENERATOR MODAL -->
+    <div id="ai-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles text-purple-600"></i> AI Wish Generator
+                </h3>
+                <button onclick="closeAIModal()" class="text-slate-400 hover:text-slate-600 text-xl cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-3 text-sm">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Select AI Provider</label>
+                    <select id="ai-provider" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+                        <option value="gemini">Google Gemini AI</option>
+                        <option value="chatgpt">ChatGPT (OpenAI)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">API Key</label>
+                    <input type="password" id="ai-api-key" placeholder="Enter Gemini or OpenAI API Key" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-purple-500">
+                </div>
+                <button onclick="generateAIWish()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium py-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-sparkles"></i> Generate AI Wish Message
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD / EDIT EVENT MODAL (OWNER) -->
+    <div id="event-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 id="modal-title" class="font-bold text-slate-800 text-lg">Add New Event</h3>
+                <button onclick="closeEventModal()" class="text-slate-400 hover:text-slate-600 text-xl cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <form id="event-form" onsubmit="saveOwnerEvent(event)" class="space-y-4">
+                <input type="hidden" id="event-id">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Name / Couple</label>
+                    <input type="text" id="event-name" required placeholder="e.g. Priya Sharma" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Event Type</label>
+                        <select id="event-type" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                            <option value="Birthday">🎂 Birthday</option>
+                            <option value="Marriage Anniversary">💍 Marriage Anniversary</option>
+                            <option value="Special Event">⭐ Special Event</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Date</label>
+                        <input type="date" id="event-date" required class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">C/O (Submitted By)</label>
+                    <input type="text" id="event-co" placeholder="e.g. Savyasachi" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Special Talents</label>
+                    <input type="text" id="event-talents" placeholder="e.g. Oratory, Mathematics, Music" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Photo / Media (Optional)</label>
+                    <input type="file" id="event-photo-input" accept="image/*,video/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 cursor-pointer">
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closeEventModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium py-2.5 rounded-xl transition text-sm cursor-pointer">Cancel</button>
+                    <button type="submit" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-xl shadow-sm transition text-sm cursor-pointer">Save Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxA6um1W4FhgCTUwJxVxbKI1-PqD-VHCWN8PQg_YPvFYnGltCTlvX1uwwwWrpmuEl-Wvg/exec";
+        let events = JSON.parse(localStorage.getItem('celebration_events')) || [];
+        let subjectMedia = { type: 'none', src: null, element: null };
+        let backgroundMedia = { type: 'gradient', src: null, element: null };
+        let animationTick = 0;
+        let photoScale = 1.0, photoOffsetX = 0, photoOffsetY = 0, isDraggingPhoto = false, startDragX = 0, startDragY = 0;
+
+        window.onload = async function() {
+            checkOwnerStatus();
+            try {
+                let res = await fetch(WEB_APP_URL);
+                let cloudEvents = await res.json();
+                if (Array.isArray(cloudEvents) && cloudEvents.length > 0) {
+                    events = cloudEvents;
+                    localStorage.setItem('celebration_events', JSON.stringify(events));
+                }
+            } catch(err) {
+                console.log("Using local cache", err);
+            }
+
+            autoRollOverEvents();
+            renderEvents();
+            checkUpcomingAlertsAndNotify();
+            populateStudioDropdown();
+            updateCanvasDimensions();
+            initDragToPanListeners();
+            requestAnimationFrame(renderLoop);
+        };
+
+        function checkOwnerStatus() {
+            const isUnlocked = localStorage.getItem('hub_owner_unlocked') === 'true';
+            const visitorView = document.getElementById('view-visitor');
+            const ownerView = document.getElementById('view-owner');
+            const visitorNav = document.getElementById('visitor-nav');
+            const ownerNav = document.getElementById('owner-nav');
+
+            if (visitorView) visitorView.classList.toggle('hidden', isUnlocked);
+            if (ownerView) ownerView.classList.toggle('hidden', !isUnlocked);
+            if (visitorNav) visitorNav.classList.toggle('hidden', isUnlocked);
+            if (ownerNav) ownerNav.classList.toggle('hidden', !isUnlocked);
+        }
+
+        function promptOwnerLogin() {
+            const pin = prompt("Enter Owner PIN to access dashboard:");
+            if (pin === "1999") {
+                localStorage.setItem('hub_owner_unlocked', 'true');
+                checkOwnerStatus();
+                alert("Owner dashboard unlocked successfully!");
+            } else if (pin !== null) {
+                alert("Incorrect PIN!");
+            }
+        }
+
+        function lockOwnerDashboard() {
+            localStorage.removeItem('hub_owner_unlocked');
+            checkOwnerStatus();
+            alert("Owner dashboard locked.");
+        }
+
+        async function submitVisitorEvent(e) {
+            e.preventDefault();
+            const id = Date.now().toString();
+            const name = document.getElementById('visitor-name').value;
+            const type = document.getElementById('visitor-type').value;
+            const date = document.getElementById('visitor-date').value;
+            const submittedBy = document.getElementById('visitor-co').value.trim();
+            const talents = document.getElementById('visitor-talents').value.trim();
+            const photoInput = document.getElementById('visitor-photo-input');
+
+            const submitRecord = async (mediaData) => {
+                const eventObj = { id, name, type, date, submittedBy, talents, photo: mediaData || null };
+                events.push(eventObj);
+                localStorage.setItem('celebration_events', JSON.stringify(events));
+
+                try {
+                    await fetch(WEB_APP_URL, {
+                        method: 'POST',
+                        body: JSON.stringify(eventObj)
+                    });
+                } catch (err) {
+                    console.log("Cloud sync error:", err);
+                }
+
+                alert("🎉 Celebration submitted successfully! Thank you.");
+                document.getElementById('visitor-form').reset();
+            };
+
+            if(photoInput.files && photoInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(uploadEvent) { submitRecord(uploadEvent.target.result); };
+                reader.readAsDataURL(photoInput.files[0]);
+            } else {
+                submitRecord(null);
+            }
+        }
+
+        function saveOwnerEvent(e) {
+            e.preventDefault();
+            const id = document.getElementById('event-id').value || Date.now().toString();
+            const name = document.getElementById('event-name').value;
+            const type = document.getElementById('event-type').value;
+            const date = document.getElementById('event-date').value;
+            const submittedBy = document.getElementById('event-co').value.trim();
+            const talents = document.getElementById('event-talents').value.trim();
+            const photoInput = document.getElementById('event-photo-input');
+
+            const saveRecord = async (mediaData) => {
+                const existingIndex = events.findIndex(ev => ev.id === id);
+                const eventObj = { 
+                    id, name, type, date, submittedBy, talents,
+                    photo: mediaData || (existingIndex >= 0 ? events[existingIndex].photo : null) 
+                };
+                
+                if(existingIndex >= 0) events[existingIndex] = eventObj;
+                else events.push(eventObj);
+
+                localStorage.setItem('celebration_events', JSON.stringify(events));
+
+                try {
+                    await fetch(WEB_APP_URL, {
+                        method: 'POST',
+                        body: JSON.stringify(eventObj)
+                    });
+                } catch (err) {
+                    console.log("Cloud sync error:", err);
+                }
+
+                closeEventModal();
+                renderEvents();
+                checkUpcomingAlertsAndNotify();
+                populateStudioDropdown();
+            };
+
+            if(photoInput.files && photoInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(uploadEvent) { saveRecord(uploadEvent.target.result); };
+                reader.readAsDataURL(photoInput.files[0]);
+            } else {
+                saveRecord(null);
+            }
+        }
+
+        function handleCSVImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                const lines = text.split('\n');
+                let importedCount = 0;
+                
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
+                    const cols = line.split(',').map(val => val.trim().replace(/^["'](.*)["']$/, '$1'));
+                    if (cols.length >= 3) {
+                        const [name, type, date, submittedBy, talents, photo] = cols;
+                        const eventObj = {
+                            id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
+                            name: name || 'Unknown',
+                            type: type || 'Birthday',
+                            date: date || new Date().toISOString().split('T')[0],
+                            submittedBy: submittedBy || '',
+                            talents: talents || '',
+                            photo: photo || null
+                        };
+                        events.push(eventObj);
+                        importedCount++;
+                    }
+                }
+                
+                localStorage.setItem('celebration_events', JSON.stringify(events));
+                renderEvents();
+                populateStudioDropdown();
+                alert(`Successfully imported ${importedCount} events from CSV!`);
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        function initDragToPanListeners() {
+            const canvas = document.getElementById('wish-canvas');
+            if(!canvas) return;
+            canvas.addEventListener('mousedown', (e) => {
+                isDraggingPhoto = true; startDragX = e.clientX; startDragY = e.clientY;
+            });
+            window.addEventListener('mousemove', (e) => {
+                if (!isDraggingPhoto) return;
+                let dx = e.clientX - startDragX; let dy = e.clientY - startDragY;
+                startDragX = e.clientX; startDragY = e.clientY;
+                const rect = canvas.getBoundingClientRect();
+                let scaleFactor = canvas.width / rect.width;
+                photoOffsetX += Math.round(dx * scaleFactor);
+                photoOffsetY += Math.round(dy * scaleFactor);
+                document.getElementById('studio-panx').value = photoOffsetX;
+                document.getElementById('studio-pany').value = photoOffsetY;
+            });
+            window.addEventListener('mouseup', () => { isDraggingPhoto = false; });
+        }
+
+        function updateImageFraming() {
+            photoScale = parseFloat(document.getElementById('studio-zoom').value);
+            photoOffsetX = parseInt(document.getElementById('studio-panx').value);
+            photoOffsetY = parseInt(document.getElementById('studio-pany').value);
+        }
+
+        function resetImageFraming() {
+            photoScale = 1.0; photoOffsetX = 0; photoOffsetY = 0;
+        }
+
+        function autoRollOverEvents() {
+            let updated = false;
+            const today = new Date(); today.setHours(0,0,0,0);
+            events = events.map(ev => {
+                let [y, m, d] = ev.date.split('-').map(Number);
+                let evDate = new Date(today.getFullYear(), m - 1, d);
+                evDate.setHours(0,0,0,0);
+                if (evDate < today) {
+                    let nextYear = today.getFullYear() + 1;
+                    ev.date = `${nextYear}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+                    updated = true;
+                }
+                return ev;
+            });
+            if (updated) localStorage.setItem('celebration_events', JSON.stringify(events));
+        }
+
+        function switchTab(tab) {
+            const isEvents = tab === 'events';
+            document.getElementById('tab-events').classList.toggle('hidden', !isEvents);
+            document.getElementById('tab-studio').classList.toggle('hidden', isEvents);
+            document.getElementById('btn-events').className = isEvents ? "px-4 py-2 rounded-lg transition bg-white text-indigo-700 shadow-sm cursor-pointer" : "px-4 py-2 rounded-lg transition text-indigo-100 hover:text-white cursor-pointer";
+            document.getElementById('btn-studio').className = !isEvents ? "px-4 py-2 rounded-lg transition bg-white text-indigo-700 shadow-sm cursor-pointer" : "px-4 py-2 rounded-lg transition text-indigo-100 hover:text-white cursor-pointer";
+            if(!isEvents) updateCanvasDimensions();
+        }
+
+        function toggleBackgroundControls() {
+            const type = document.getElementById('studio-bg-type').value;
+            document.getElementById('custom-bg-box').classList.toggle('hidden', type !== 'custom');
+        }
+
+        function requestNotificationPermission() {
+            if (!("Notification" in window)) return;
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") alert("Notifications enabled!");
+            });
+        }
+
+        function addToGoogleCalendar(id) {
+            const ev = events.find(e => e.id === id);
+            if (!ev) return;
+            let [y, m, d] = ev.date.split('-');
+            let startDate = `${y}${m}${d}`;
+            let title = encodeURIComponent(`${ev.name}'s ${ev.type}`);
+            let details = encodeURIComponent(`🎉 Celebration! C/O: ${ev.submittedBy || 'N/A'}\nTalents: ${ev.talents || 'N/A'}`);
+            window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${startDate}&details=${details}`, '_blank');
+        }
+
+        function createPosterForEvent(id) {
+            switchTab('studio');
+            populateStudioDropdown();
+            document.getElementById('studio-event-select').value = id;
+            loadEventIntoStudio();
+        }
+
+        function openAIModal() { document.getElementById('ai-modal').classList.remove('hidden'); }
+        function closeAIModal() { document.getElementById('ai-modal').classList.add('hidden'); }
+
+        async function generateAIWish() {
+            const apiKey = document.getElementById('ai-api-key').value.trim();
+            const provider = document.getElementById('ai-provider').value;
+            const name = document.getElementById('studio-name').value || 'Friend';
+            const occasion = document.getElementById('studio-occasion').value || 'Birthday';
+            const co = document.getElementById('studio-co').value || 'GTMHS Hub';
+            const talents = document.getElementById('studio-talents').value || 'excellence';
+            
+            if (!apiKey) { alert('Please enter your API key.'); return; }
+            
+            const prompt = `Write a short, heartfelt, and inspiring wish message for ${name} on their ${occasion} (Submitted with reference: C/O ${co}). Their special talents/skills include: ${talents}. Keep it warm, engaging, and under 45 words.`;
+            
+            try {
+                if (provider === 'gemini') {
+                    let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                        method: 'POST', 
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                    });
+                    let data = await res.json();
+                    let text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (text) { 
+                        document.getElementById('studio-message').value = text.trim(); 
+                        closeAIModal(); 
+                    } else {
+                        alert('Could not parse response from Gemini. Check your API key.');
+                    }
+                } else if (provider === 'chatgpt') {
+                    let res = await fetch(`https://api.openai.com/v1/chat/completions`, {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${apiKey}`
+                        },
+                        body: JSON.stringify({
+                            model: 'gpt-3.5-turbo',
+                            messages: [{ role: 'user', content: prompt }],
+                            max_tokens: 60
+                        })
+                    });
+                    let data = await res.json();
+                    let text = data.choices?.[0]?.message?.content;
+                    if (text) {
+                        document.getElementById('studio-message').value = text.trim();
+                        closeAIModal();
+                    } else {
+                        alert('Could not parse response from ChatGPT. Check your API key.');
+                    }
+                }
+            } catch(e) { 
+                console.error(e);
+                alert('AI generation error. Check network connection or API key validity.'); 
+            }
+        }
+
+        function openEventModal(id = null) {
+            document.getElementById('event-modal').classList.remove('hidden');
+            if(id) {
+                document.getElementById('modal-title').innerText = 'Edit Event';
+                const ev = events.find(e => e.id === id);
+                if(ev) {
+                    document.getElementById('event-id').value = ev.id;
+                    document.getElementById('event-name').value = ev.name;
+                    document.getElementById('event-type').value = ev.type;
+                    document.getElementById('event-date').value = ev.date;
+                    document.getElementById('event-co').value = ev.submittedBy || '';
+                    document.getElementById('event-talents').value = ev.talents || '';
+                }
+            } else {
+                document.getElementById('modal-title').innerText = 'Add New Event';
+                document.getElementById('event-form').reset();
+                document.getElementById('event-id').value = '';
+            }
+        }
+
+        function closeEventModal() { document.getElementById('event-modal').classList.add('hidden'); }
+
+        function deleteEvent(id) {
+            if(confirm('Delete event?')) {
+                events = events.filter(e => e.id !== id);
+                localStorage.setItem('celebration_events', JSON.stringify(events));
+                renderEvents();
+                populateStudioDropdown();
+            }
+        }
+
+        function renderEvents() {
+            const grid = document.getElementById('events-grid');
+            const emptyState = document.getElementById('empty-state');
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const filtered = events.filter(e => e.name.toLowerCase().includes(searchTerm) || e.type.toLowerCase().includes(searchTerm) || (e.submittedBy && e.submittedBy.toLowerCase().includes(searchTerm)) || (e.talents && e.talents.toLowerCase().includes(searchTerm)));
+            
+            grid.innerHTML = '';
+            if(filtered.length === 0) { emptyState.classList.remove('hidden'); return; }
+            emptyState.classList.add('hidden');
+            
+            filtered.forEach(ev => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start gap-2 mb-3">
+                            <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">${ev.date}</span>
+                            <div class="flex gap-1.5 text-slate-400">
+                                <button onclick="openEventModal('${ev.id}')" class="hover:text-indigo-600 p-1 cursor-pointer"><i class="fa-solid fa-pen text-xs"></i></button>
+                                <button onclick="deleteEvent('${ev.id}')" class="hover:text-rose-600 p-1 cursor-pointer"><i class="fa-solid fa-trash text-xs"></i></button>
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-slate-800">${ev.name}</h4>
+                        <p class="text-xs text-indigo-600 font-medium">${ev.type}</p>
+                        <p class="text-xs text-slate-500 mt-2">C/O: ${ev.submittedBy || 'N/A'}</p>
+                        <p class="text-xs text-purple-600">Talents: ${ev.talents || 'N/A'}</p>
+                        ${ev.photo ? '<p class="text-xs text-emerald-600 mt-1"><i class="fa-solid fa-image"></i> Photo included</p>' : ''}
+                    </div>
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="createPosterForEvent('${ev.id}')" class="flex-1 text-xs bg-indigo-50 text-indigo-700 font-semibold py-2 rounded-lg hover:bg-indigo-100 transition cursor-pointer flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Create Poster
+                        </button>
+                        <button onclick="addToGoogleCalendar('${ev.id}')" class="flex-1 text-xs bg-blue-50 text-blue-700 font-semibold py-2 rounded-lg hover:bg-blue-100 transition cursor-pointer">Add to Calendar</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function populateStudioDropdown() {
+            const select = document.getElementById('studio-event-select');
+            select.innerHTML = '<option value="">-- Choose from saved events --</option>';
+            events.forEach(ev => {
+                let opt = document.createElement('option');
+                opt.value = ev.id;
+                opt.innerText = `${ev.name} (${ev.type} - ${ev.date})`;
+                select.appendChild(opt);
+            });
+        }
+
+        function loadEventIntoStudio() {
+            const id = document.getElementById('studio-event-select').value;
+            if(!id) return;
+            const ev = events.find(e => e.id === id);
+            if(!ev) return;
+            document.getElementById('studio-name').value = ev.name;
+            document.getElementById('studio-occasion').value = ev.type === 'Birthday' ? 'Happy Birthday!' : (ev.type === 'Marriage Anniversary' ? 'Happy Anniversary!' : 'Special Celebration!');
+            document.getElementById('studio-co').value = ev.submittedBy || '';
+            document.getElementById('studio-talents').value = ev.talents || '';
+            if(ev.photo) {
+                subjectMedia = { type: 'image', src: ev.photo, element: new Image() };
+                subjectMedia.element.src = ev.photo;
+            }
+        }
+
+        function handleStudioPhoto(e) {
+            const file = e.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                subjectMedia = { type: 'image', src: evt.target.result, element: new Image() };
+                subjectMedia.element.src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handleBackgroundMedia(e) {
+            const file = e.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                backgroundMedia = { type: 'image', src: evt.target.result, element: new Image() };
+                backgroundMedia.element.src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function updateCanvasDimensions() {
+            const format = document.getElementById('studio-format').value;
+            const canvas = document.getElementById('wish-canvas');
+            let w = 800, h = 1000;
+            if (format === 'square') { w = 800; h = 800; }
+            else if (format === 'portrait') { w = 800; h = 1000; }
+            else if (format === 'story') { w = 1080; h = 1920; }
+            else if (format === 'landscape') { w = 1280; h = 720; }
+            else if (format === 'postcard') { w = 1200; h = 800; }
+            else if (format === 'banner') { w = 1200; h = 600; }
+            else if (format === 'insta') { w = 1080; h = 810; }
+            else if (format === 'a4') { w = 794; h = 1123; }
+            else if (format === 'wallpaper') { w = 1080; h = 1920; }
+            else if (format === 'badge_fmt') { w = 800; h = 800; }
+            canvas.width = w; canvas.height = h;
+        }
+
+        function renderLoop() {
+            animationTick++;
+            const canvas = document.getElementById('wish-canvas');
+            if(canvas) {
+                const ctx = canvas.getContext('2d');
+                drawPosterCanvas(ctx, canvas.width, canvas.height);
+            }
+            requestAnimationFrame(renderLoop);
+        }
+
+        function drawPosterCanvas(ctx, w, h) {
+            ctx.clearRect(0, 0, w, h);
+            
+            const bgType = document.getElementById('studio-bg-type').value;
+            if(bgType === 'custom' && backgroundMedia.element && backgroundMedia.element.complete) {
+                ctx.drawImage(backgroundMedia.element, 0, 0, w, h);
+            } else {
+                let grad = ctx.createLinearGradient(0, 0, w, h);
+                if(bgType === 'royal') { grad.addColorStop(0, '#312e81'); grad.addColorStop(1, '#1e1b4b'); }
+                else if(bgType === 'emerald') { grad.addColorStop(0, '#065f46'); grad.addColorStop(1, '#022c22'); }
+                else if(bgType === 'rose') { grad.addColorStop(0, '#9f1239'); grad.addColorStop(1, '#4c0519'); }
+                else if(bgType === 'golden') { grad.addColorStop(0, '#78350f'); grad.addColorStop(1, '#451a03'); }
+                else if(bgType === 'cyberpunk') { grad.addColorStop(0, '#831843'); grad.addColorStop(1, '#3b0764'); }
+                else { grad.addColorStop(0, '#4f46e5'); grad.addColorStop(1, '#312e81'); }
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, w, h);
+            }
+
+            if(subjectMedia.element && subjectMedia.element.complete) {
+                ctx.save();
+                ctx.translate(w/2 + photoOffsetX, h/2 - 100 + photoOffsetY);
+                ctx.scale(photoScale, photoScale);
+                ctx.beginPath();
+                ctx.arc(0, 0, 140, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.clip();
+                ctx.drawImage(subjectMedia.element, -140, -140, 280, 280);
+                ctx.restore();
+
+                ctx.save();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 6;
+                ctx.beginPath();
+                ctx.arc(w/2 + photoOffsetX, h/2 - 100 + photoOffsetY, 140, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            
+            ctx.font = 'bold 36px Poppins, sans-serif';
+            let occasion = document.getElementById('studio-occasion').value || 'Happy Birthday!';
+            ctx.fillText(occasion, w/2, h - 320);
+
+            ctx.font = 'bold 48px Poppins, sans-serif';
+            let name = document.getElementById('studio-name').value || 'Aarav Sharma';
+            ctx.fillText(name, w/2, h - 250);
+
+            ctx.font = '22px Poppins, sans-serif';
+            ctx.fillStyle = '#c7d2fe';
+            let message = document.getElementById('studio-message').value || '';
+            ctx.fillText(message, w/2, h - 190);
+
+            ctx.font = 'italic 18px Poppins, sans-serif';
+            ctx.fillStyle = '#93c5fd';
+            let co = document.getElementById('studio-co').value;
+            if(co) ctx.fillText(`Submitted by C/O: ${co}`, w/2, h - 130);
+
+            let talents = document.getElementById('studio-talents').value;
+            if(talents) {
+                ctx.font = '16px Poppins, sans-serif';
+                ctx.fillStyle = '#fde68a';
+                ctx.fillText(`Talents: ${talents}`, w/2, h - 90);
+            }
+        }
+
+        function downloadPoster() {
+            const canvas = document.getElementById('wish-canvas');
+            const link = document.createElement('a');
+            link.download = 'GTMHS-Celebration-Wish.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        function shareViaWhatsApp() {
+            const name = document.getElementById('studio-name').value || 'Friend';
+            const occasion = document.getElementById('studio-occasion').value || 'Happy Birthday!';
+            const message = document.getElementById('studio-message').value || '';
+            const text = encodeURIComponent(`🎉 *${occasion}*, ${name}!\n\n${message}\n\n- Via GTMHS Celebration Hub`);
+            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+        }
+
+        function checkUpcomingAlertsAndNotify() {}
+    </script>
 </body>
 </html>
