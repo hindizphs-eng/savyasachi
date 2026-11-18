@@ -469,16 +469,27 @@
                 localStorage.setItem('celebration_events', JSON.stringify(events));
 
                 try {
+                    // Send to Google Apps Script cloud backend
                     await fetch(WEB_APP_URL, {
                         method: 'POST',
                         body: JSON.stringify(eventObj)
                     });
+
+                    // Immediately pull fresh data from cloud to sync local array
+                    let res = await fetch(WEB_APP_URL);
+                    let cloudEvents = await res.json();
+                    if (Array.isArray(cloudEvents) && cloudEvents.length > 0) {
+                        events = cloudEvents;
+                        localStorage.setItem('celebration_events', JSON.stringify(events));
+                    }
                 } catch (err) {
                     console.log("Cloud sync error:", err);
                 }
 
                 alert("🎉 Celebration submitted successfully! Thank you.");
                 document.getElementById('visitor-form').reset();
+                renderEvents();
+                populateStudioDropdown();
             };
 
             if(photoInput.files && photoInput.files[0]) {
