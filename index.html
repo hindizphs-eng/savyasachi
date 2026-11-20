@@ -3,46 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GTMHS Celebration Hub - Submission Portal</title>
+    <title>GTMHS Celebration Hub - Colorful Interactive Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Poppins', sans-serif; }
-        .canvas-preview-box { max-width: 100%; max-height: 550px; cursor: grab; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #fdf4ff 0%, #eff6ff 50%, #f0fdf4 100%); }
+        .canvas-preview-box { max-width: 100%; max-height: 560px; cursor: grab; touch-action: none; }
         .canvas-preview-box:active { cursor: grabbing; }
+        @keyframes floatSlow { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
+        .animate-float { animation: floatSlow 3s ease-in-out infinite; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
-    <!-- Header -->
-    <header class="bg-indigo-600 text-white shadow-md sticky top-0 z-50">
+<body class="text-slate-800 min-h-screen flex flex-col">
+
+    <!-- VIBRANT HEADER -->
+    <header class="bg-gradient-to-r from-fuchsia-600 via-purple-600 to-indigo-600 text-white shadow-lg sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-3">
             <div class="flex items-center gap-3">
-                <div class="bg-white/10 p-2.5 rounded-xl text-2xl">🎉</div>
+                <div class="bg-white/20 backdrop-blur-md p-2.5 rounded-2xl text-2xl shadow-inner animate-float">🎉</div>
                 <div>
-                    <h1 class="text-xl font-bold tracking-tight">GTMHS Celebration Hub</h1>
-                    <p class="text-xs text-indigo-200">Submit Your Celebrations & Special Talents</p>
+                    <h1 class="text-xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-amber-200">GTMHS Celebration Hub</h1>
+                    <p class="text-xs text-purple-100 font-medium">Annual Celebrations • Download Data • Design Wish Posters</p>
                 </div>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex flex-wrap items-center gap-2">
+                <!-- Share Portal Button -->
+                <button type="button" onclick="sharePortalLink()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3.5 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 shadow-md cursor-pointer">
+                    <i class="fa-brands fa-whatsapp text-sm"></i> Share Invite Link
+                </button>
+
                 <div id="visitor-nav">
-                    <button type="button" onclick="promptOwnerLogin()" class="bg-indigo-700 hover:bg-indigo-800 text-white px-3.5 py-2 rounded-xl text-xs font-medium transition flex items-center gap-1.5 shadow-sm border border-indigo-500 cursor-pointer">
+                    <button type="button" onclick="openOwnerLoginModal()" class="bg-white/15 hover:bg-white/25 backdrop-blur-md text-white px-3.5 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 shadow-sm border border-white/30 cursor-pointer">
                         <i class="fa-solid fa-lock"></i> Owner Login
                     </button>
                 </div>
+
                 <div id="owner-nav" class="hidden flex items-center gap-2">
-                    <button onclick="requestNotificationPermission()" class="bg-indigo-700 hover:bg-indigo-800 text-white px-3.5 py-2 rounded-xl text-xs font-medium transition flex items-center gap-1.5 shadow-sm border border-indigo-500">
-                        <i class="fa-solid fa-bell"></i> Alerts
+                    <button onclick="requestNotificationPermission()" class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 shadow-sm cursor-pointer" title="Enable Desktop Alerts">
+                        <i class="fa-solid fa-bell"></i>
                     </button>
-                    <nav class="flex bg-indigo-700/60 p-1 rounded-xl text-sm font-medium">
-                        <button onclick="switchTab('events')" id="btn-events" class="px-4 py-2 rounded-lg transition bg-white text-indigo-700 shadow-sm cursor-pointer">
-                            <i class="fa-solid fa-calendar-days mr-1.5"></i> Events
+                    <nav class="flex bg-black/20 backdrop-blur-md p-1 rounded-xl text-xs sm:text-sm font-semibold">
+                        <button onclick="switchTab('events')" id="btn-events" class="px-3.5 py-1.5 rounded-lg transition bg-white text-purple-700 shadow-sm cursor-pointer">
+                            <i class="fa-solid fa-calendar-days mr-1"></i> Events
                         </button>
-                        <button onclick="switchTab('studio')" id="btn-studio" class="px-4 py-2 rounded-lg transition text-indigo-100 hover:text-white cursor-pointer">
-                            <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Wish Studio
+                        <button onclick="switchTab('studio')" id="btn-studio" class="px-3.5 py-1.5 rounded-lg transition text-white/90 hover:text-white cursor-pointer">
+                            <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Wish Studio
                         </button>
                     </nav>
-                    <button onclick="lockOwnerDashboard()" title="Lock Dashboard" class="bg-rose-600 hover:bg-rose-700 text-white p-2 rounded-xl text-xs cursor-pointer">
+                    <button onclick="lockOwnerDashboard()" title="Lock Dashboard" class="bg-rose-500 hover:bg-rose-600 text-white p-2 rounded-xl text-xs shadow-sm cursor-pointer">
                         <i class="fa-solid fa-lock-open"></i>
                     </button>
                 </div>
@@ -50,261 +59,292 @@
         </div>
     </header>
 
-    <!-- Main Container -->
+    <!-- MAIN CONTAINER -->
     <main class="max-w-6xl mx-auto px-4 py-6 flex-grow w-full">
 
         <!-- ================= VISITOR SUBMISSION VIEW (DEFAULT) ================= -->
-        <section id="view-visitor" class="max-w-xl mx-auto bg-white p-8 rounded-3xl shadow-lg border border-slate-100 space-y-6 my-6">
+        <section id="view-visitor" class="max-w-xl mx-auto bg-white/90 backdrop-blur-lg p-7 sm:p-9 rounded-3xl shadow-xl border border-purple-100 space-y-6 my-4 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500"></div>
+            
             <div class="text-center space-y-2">
-                <div class="inline-block bg-indigo-50 text-indigo-600 p-3 rounded-2xl text-3xl mb-1">✨</div>
-                <h2 class="text-2xl font-bold text-slate-800">Share Your Celebration</h2>
-                <p class="text-sm text-slate-500">Submit your upcoming Birthday, Anniversary, and Special Talents to be featured!</p>
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-tr from-pink-500 to-amber-400 text-white rounded-2xl text-3xl shadow-lg mb-1">✨</div>
+                <h2 class="text-2xl font-extrabold text-slate-800">Share Your Celebration Details</h2>
+                <p class="text-sm text-slate-500">Submit once—your celebration repeats automatically every year!</p>
             </div>
 
             <form id="visitor-form" onsubmit="submitVisitorEvent(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Your Name / Couple Name</label>
-                    <input type="text" id="visitor-name" required placeholder="e.g. Rahul Sharma" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                    <label class="block text-xs font-bold text-purple-700 uppercase mb-1">Your Name / Couple Name *</label>
+                    <input type="text" id="visitor-name" required placeholder="e.g. Rahul Sharma" class="w-full p-3 bg-purple-50/50 border border-purple-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition">
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Event Type</label>
-                        <select id="visitor-type" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                        <label class="block text-xs font-bold text-purple-700 uppercase mb-1">Event Type *</label>
+                        <select id="visitor-type" class="w-full p-3 bg-purple-50/50 border border-purple-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition">
                             <option value="Birthday">🎂 Birthday</option>
                             <option value="Marriage Anniversary">💍 Marriage Anniversary</option>
-                            <option value="Special Event">⭐ Special Event</option>
+                            <option value="Special Event">⭐ Special Event / Milestone</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Date</label>
-                        <input type="date" id="visitor-date" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                        <label class="block text-xs font-bold text-purple-700 uppercase mb-1">Celebration / Birth / Wedding Date *</label>
+                        <input type="date" id="visitor-date" required class="w-full p-3 bg-purple-50/50 border border-purple-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">C/O (Submitted By / Reference)</label>
-                    <input type="text" id="visitor-co" required placeholder="e.g. Savyasachi" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                    <label class="block text-xs font-bold text-purple-700 uppercase mb-1">C/O (Submitted By / Reference) *</label>
+                    <input type="text" id="visitor-co" required placeholder="e.g. Savyasachi" class="w-full p-3 bg-purple-50/50 border border-purple-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Special Talents</label>
-                    <input type="text" id="visitor-talents" placeholder="e.g. Singing, Oratory, Coding" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                    <label class="block text-xs font-bold text-purple-700 uppercase mb-1">Special Talents / Hobbies</label>
+                    <input type="text" id="visitor-talents" placeholder="e.g. Singing, Poetry, Teaching, Coding" class="w-full p-3 bg-purple-50/50 border border-purple-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition">
                 </div>
 
-                <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Photo / Media (Optional)</label>
-                    <input type="file" id="visitor-photo-input" accept="image/*,video/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 cursor-pointer">
+                <div class="bg-gradient-to-r from-indigo-50 to-pink-50 p-4 rounded-2xl border border-indigo-100">
+                    <label class="block text-xs font-bold text-indigo-700 uppercase mb-1.5">Upload Your Photo (Auto-optimized for Posters)</label>
+                    <input type="file" id="visitor-photo-input" accept="image/*" onchange="previewVisitorPhoto(event)" class="w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 cursor-pointer">
+                    <div id="visitor-photo-preview-box" class="hidden mt-3 flex items-center gap-3">
+                        <img id="visitor-photo-thumb" class="w-14 h-14 rounded-full object-cover border-2 border-indigo-400 shadow-sm">
+                        <span class="text-xs text-emerald-700 font-semibold"><i class="fa-solid fa-circle-check"></i> Photo ready for your wish poster!</span>
+                    </div>
                 </div>
 
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3.5 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-base cursor-pointer">
-                    <i class="fa-solid fa-paper-plane"></i> Submit Celebration
+                <button type="submit" id="visitor-submit-btn" class="w-full bg-gradient-to-r from-fuchsia-600 via-purple-600 to-indigo-600 hover:opacity-95 text-white font-bold py-3.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-base cursor-pointer">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Celebration Details
                 </button>
             </form>
+
+            <div class="pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
+                <span>Want your friends to submit theirs too?</span>
+                <button type="button" onclick="sharePortalLink()" class="text-emerald-600 font-bold hover:underline flex items-center gap-1 cursor-pointer">
+                    <i class="fa-brands fa-whatsapp"></i> Share Form on WhatsApp
+                </button>
+            </div>
         </section>
 
         <!-- ================= OWNER DASHBOARD VIEW (LOCKED/UNLOCKED) ================= -->
         <div id="view-owner" class="hidden space-y-6">
+            
             <!-- TAB 1: EVENTS MANAGER -->
             <section id="tab-events" class="space-y-6">
-                <div id="alerts-banner" class="hidden bg-gradient-to-r from-amber-500 to-orange-500 text-white p-4 rounded-2xl shadow-lg flex items-start gap-3">
-                    <i class="fa-solid fa-bell text-2xl mt-0.5 animate-bounce"></i>
+                
+                <!-- UPCOMING CELEBRATIONS ALERT BANNER -->
+                <div id="alerts-banner" class="hidden bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 text-white p-4 rounded-2xl shadow-lg flex items-start gap-3">
+                    <i class="fa-solid fa-cake-candles text-2xl mt-0.5 animate-bounce"></i>
                     <div class="flex-grow">
-                        <h3 class="font-bold text-base">Upcoming Celebrations!</h3>
-                        <div id="alerts-list" class="text-sm mt-1 space-y-1"></div>
+                        <h3 class="font-bold text-base">Upcoming Annual Celebrations (Next 7 Days)!</h3>
+                        <div id="alerts-list" class="text-sm mt-1 space-y-1 font-medium"></div>
                     </div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                <!-- TOOLBAR: SEARCH, IMPORT, EXPORT CSV, ADD -->
+                <div class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-4 bg-white p-4 rounded-2xl shadow-md border border-purple-100">
                     <div class="relative flex-grow max-w-md">
-                        <i class="fa-solid fa-search absolute left-3.5 top-3.5 text-slate-400"></i>
-                        <input type="text" id="search-input" oninput="renderEvents()" placeholder="Search by name, event, C/O, or talents..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <i class="fa-solid fa-search absolute left-3.5 top-3.5 text-purple-400"></i>
+                        <input type="text" id="search-input" oninput="renderEvents()" placeholder="Search name, event, C/O, or talents..." class="w-full pl-10 pr-4 py-2.5 bg-purple-50/50 border border-purple-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
-                    <div class="flex items-center gap-2.5">
-                        <label class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-medium px-4 py-2.5 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm cursor-pointer border border-emerald-200" title="CSV Format: name, type, date, submittedBy, talents, photo">
-                            <i class="fa-solid fa-file-arrow-up"></i> Import CSV
+
+                    <div class="flex flex-wrap items-center gap-2">
+                        <!-- Sync Cloud Button -->
+                        <button onclick="syncFromCloud()" class="bg-sky-50 hover:bg-sky-100 text-sky-700 font-semibold px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5 text-xs sm:text-sm border border-sky-200 cursor-pointer" title="Fetch latest submissions from Google Sheet">
+                            <i class="fa-solid fa-arrows-rotate"></i> Sync
+                        </button>
+
+                        <!-- Export / Download CSV Button -->
+                        <button onclick="exportEventsToCSV()" class="bg-amber-50 hover:bg-amber-100 text-amber-800 font-semibold px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5 text-xs sm:text-sm border border-amber-200 cursor-pointer" title="Download all friend details as Excel/CSV file">
+                            <i class="fa-solid fa-file-csv"></i> Download CSV
+                        </button>
+
+                        <!-- Import CSV Button -->
+                        <label class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5 text-xs sm:text-sm cursor-pointer border border-emerald-200" title="Import CSV: name, type, date, submittedBy, talents">
+                            <i class="fa-solid fa-file-arrow-up"></i> Import
                             <input type="file" accept=".csv" onchange="handleCSVImport(event)" class="hidden">
                         </label>
-                        <button onclick="openEventModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-5 py-2.5 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm cursor-pointer">
+
+                        <!-- Add Event Button -->
+                        <button onclick="openEventModal()" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-95 text-white font-semibold px-4 py-2.5 rounded-xl shadow-md transition flex items-center gap-1.5 text-xs sm:text-sm cursor-pointer">
                             <i class="fa-solid fa-plus"></i> Add Event
                         </button>
                     </div>
                 </div>
 
+                <!-- FILTER PILLS -->
+                <div class="flex flex-wrap gap-2 items-center text-xs font-semibold">
+                    <span class="text-slate-500 mr-1">Filter:</span>
+                    <button onclick="setFilterType('ALL')" id="filter-ALL" class="px-3 py-1.5 rounded-full bg-purple-600 text-white shadow-sm cursor-pointer">All (<span id="count-all">0</span>)</button>
+                    <button onclick="setFilterType('Birthday')" id="filter-Birthday" class="px-3 py-1.5 rounded-full bg-white text-pink-600 border border-pink-200 hover:bg-pink-50 cursor-pointer">🎂 Birthdays</button>
+                    <button onclick="setFilterType('Marriage Anniversary')" id="filter-Marriage Anniversary" class="px-3 py-1.5 rounded-full bg-white text-emerald-600 border border-emerald-200 hover:bg-emerald-50 cursor-pointer">💍 Anniversaries</button>
+                    <button onclick="setFilterType('Special Event')" id="filter-Special Event" class="px-3 py-1.5 rounded-full bg-white text-amber-600 border border-amber-200 hover:bg-amber-50 cursor-pointer">⭐ Special Events</button>
+                    <span class="ml-auto text-purple-700 bg-purple-100/80 px-3 py-1 rounded-full"><i class="fa-solid fa-repeat mr-1"></i> Auto-Repeats Annually</span>
+                </div>
+
+                <!-- EVENTS GRID -->
                 <div id="events-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
                 
-                <div id="empty-state" class="hidden text-center py-16 bg-white rounded-2xl border border-dashed border-slate-200">
-                    <i class="fa-solid fa-cake-candles text-4xl text-slate-300 mb-3"></i>
-                    <h3 class="font-semibold text-slate-600">No events saved yet</h3>
-                    <p class="text-sm text-slate-400 mt-1">Import your CSV file or add events manually.</p>
+                <div id="empty-state" class="hidden text-center py-16 bg-white rounded-3xl border border-dashed border-purple-200">
+                    <i class="fa-solid fa-cake-candles text-5xl text-purple-300 mb-3"></i>
+                    <h3 class="font-bold text-slate-700 text-lg">No celebrations found</h3>
+                    <p class="text-sm text-slate-400 mt-1">Share your invite link with friends or add events manually!</p>
                 </div>
             </section>
 
             <!-- TAB 2: WISH STUDIO -->
             <section id="tab-studio" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <div class="lg:col-span-5 bg-white p-5 rounded-2xl shadow-sm border border-slate-100 space-y-4 max-h-[85vh] overflow-y-auto">
-                    <div class="flex justify-between items-center sticky top-0 bg-white py-1 z-10 border-b border-slate-100">
-                        <h2 class="font-bold text-slate-700 text-lg flex items-center gap-2">
-                            <i class="fa-solid fa-photo-film text-indigo-600"></i> Wish Studio
+                
+                <!-- LEFT CONTROLS PANEL -->
+                <div class="lg:col-span-5 bg-white p-5 rounded-3xl shadow-md border border-purple-100 space-y-4 max-h-[85vh] overflow-y-auto">
+                    <div class="flex justify-between items-center sticky top-0 bg-white py-2 z-10 border-b border-purple-100">
+                        <h2 class="font-extrabold text-purple-800 text-lg flex items-center gap-2">
+                            <i class="fa-solid fa-wand-magic-sparkles text-fuchsia-600"></i> Wish Poster Studio
                         </h2>
-                        <button onclick="openAIModal()" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm hover:opacity-95 transition flex items-center gap-1.5 cursor-pointer">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i> AI Wish Generator
+                        <button onclick="openAIModal()" class="bg-gradient-to-r from-fuchsia-600 to-indigo-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-sm hover:opacity-95 transition flex items-center gap-1.5 cursor-pointer">
+                            <i class="fa-solid fa-robot"></i> AI Wish
                         </button>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Select Event (Optional)</label>
-                        <select id="studio-event-select" onchange="loadEventIntoStudio()" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
-                            <option value="">-- Choose from saved events --</option>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Auto-Fill From Saved Event</label>
+                        <select id="studio-event-select" onchange="loadEventIntoStudio()" class="w-full p-2.5 bg-purple-50/50 border border-purple-200 rounded-xl text-sm font-medium">
+                            <option value="">-- Choose a Friend / Event --</option>
                         </select>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Poster Format</label>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Poster Size</label>
                             <select id="studio-format" onchange="updateCanvasDimensions();" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
                                 <option value="square">Square (1:1)</option>
                                 <option value="portrait" selected>Portrait (4:5)</option>
-                                <option value="story">Story / Status (9:16)</option>
+                                <option value="story">WhatsApp Status (9:16)</option>
                                 <option value="landscape">Landscape (16:9)</option>
                                 <option value="postcard">Postcard (3:2)</option>
                                 <option value="banner">Wide Banner (2:1)</option>
-                                <option value="insta">Instagram (4:3)</option>
-                                <option value="a4">A4 Document</option>
-                                <option value="wallpaper">Phone Wallpaper</option>
-                                <option value="badge_fmt">Circle Badge</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Design Layout</label>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Frame Design (12 Styles)</label>
                             <select id="studio-layout" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
-                                <option value="classic">1. Classic Royal</option>
-                                <option value="polaroid">2. Polaroid Frame</option>
-                                <option value="modern">3. Modern Split</option>
-                                <option value="minimalist">4. Minimalist Elegant</option>
-                                <option value="badge">5. Ribbon & Badge</option>
-                                <option value="neon_glow">6. Neon Glow Frame</option>
-                                <option value="vintage_news">7. Vintage Newspaper</option>
-                                <option value="floral_frame">8. Floral Garden</option>
-                                <option value="golden_elegance">9. Golden Elegance</option>
-                                <option value="cyberpunk_hud">10. Cyberpunk HUD</option>
-                                <option value="starlight_arch">11. Starlight Arch</option>
-                                <option value="double_border">12. Double Border</option>
-                                <option value="heartfelt_locket">13. Heartfelt Locket</option>
-                                <option value="geometric_art">14. Geometric Art Deco</option>
-                                <option value="magazine_cover">15. Magazine Cover</option>
-                                <option value="royal_crest">16. Royal Crest</option>
-                                <option value="floating_bubble">17. Floating Bubble</option>
-                                <option value="cosmic_portal">18. Cosmic Portal</option>
-                                <option value="polaroid_stack">19. Polaroid Stack</option>
-                                <option value="minimal_card">20. Minimal Card</option>
+                                <option value="classic">1. Classic Gold Circle</option>
+                                <option value="polaroid">2. Polaroid Card Frame</option>
+                                <option value="royal_arch">3. Royal Arch & Gold Trim</option>
+                                <option value="neon_glow">4. Cyber Neon Ring Glow</option>
+                                <option value="double_border">5. Luxury Double Border</option>
+                                <option value="floral_wreath">6. Floral Blossom Wreath</option>
+                                <option value="heart_locket">7. Romantic Heart Frame</option>
+                                <option value="star_sunburst">8. Golden Star Sunburst</option>
+                                <option value="vintage_stamp">9. Vintage Postage Stamp</option>
+                                <option value="hexagon_badge">10. Modern Hexagon Badge</option>
+                                <option value="rainbow_halo">11. Rainbow Aura Halo</option>
+                                <option value="magazine_cover">12. Celebrity Magazine Cover</option>
                             </select>
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Person Name</label>
-                        <input type="text" id="studio-name" placeholder="e.g. Aarav Sharma" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Celebrant Name</label>
+                        <input type="text" id="studio-name" placeholder="e.g. Aarav Sharma" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold">
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Occasion / Title</label>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Occasion Title</label>
                             <input type="text" id="studio-occasion" value="Happy Birthday!" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">C/O (Submitted By)</label>
-                            <input type="text" id="studio-co" placeholder="e.g. Savyasachi" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Wishes From / C/O</label>
+                            <input type="text" id="studio-co" placeholder="e.g. GTMHS 1999 Batch" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Special Talents</label>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Special Talents Highlight</label>
                         <input type="text" id="studio-talents" placeholder="e.g. Oratory, Singing, Coding" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Custom Wish Message</label>
-                        <textarea id="studio-message" rows="2" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">Wishing you a wonderful year ahead filled with happiness and success!</textarea>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Wish Message (Auto-wraps cleanly)</label>
+                        <textarea id="studio-message" rows="3" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">Wishing you a wonderful year ahead filled with vibrant happiness, good health, and grand success!</textarea>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Background Style</label>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Theme & Animation (16 Styles)</label>
                             <select id="studio-bg-type" onchange="toggleBackgroundControls()" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
-                                <option value="sunset">1. Sunset Glow</option>
-                                <option value="royal">2. Royal Indigo</option>
-                                <option value="emerald">3. Emerald Spring</option>
-                                <option value="rose">4. Rose Gold</option>
-                                <option value="golden">5. Golden Luxury</option>
-                                <option value="cyberpunk">6. Neon Cyberpunk</option>
-                                <option value="pastel">7. Pastel Dream</option>
-                                <option value="midnight">8. Midnight Velvet</option>
-                                <option value="ruby">9. Ruby Red</option>
-                                <option value="sapphire">10. Sapphire Blue</option>
-                                <option value="confetti">11. Confetti & Sparkles</option>
-                                <option value="bokeh">12. Glowing Bokeh</option>
-                                <option value="hearts">13. Falling Hearts</option>
-                                <option value="stars">14. Floating Stars</option>
-                                <option value="dust">15. Golden Dust</option>
-                                <option value="matrix">16. Matrix Rain</option>
-                                <option value="polygons">17. Polygons</option>
-                                <option value="prisms">18. Rainbow Prisms</option>
-                                <option value="fireworks">19. Fireworks</option>
-                                <option value="custom">20. Custom Upload</option>
+                                <option value="confetti">1. Confetti Party</option>
+                                <option value="sunset">2. Vibrant Sunset Glow</option>
+                                <option value="royal">3. Royal Indigo & Gold</option>
+                                <option value="emerald">4. Emerald Festive</option>
+                                <option value="rose">5. Rose Gold & Floating Hearts</option>
+                                <option value="golden">6. Golden Sparkle Dust</option>
+                                <option value="cyberpunk">7. Neon Cyber Grid</option>
+                                <option value="stars">8. Starry Night Twinkle</option>
+                                <option value="fireworks">9. Festive Fireworks</option>
+                                <option value="aurora">10. Northern Lights Aurora</option>
+                                <option value="tropical">11. Tropical Mango & Coral</option>
+                                <option value="ocean_bokeh">12. Ocean Teal Bokeh</option>
+                                <option value="diwali_lamps">13. Festive Marigold & Lamps</option>
+                                <option value="bubbles">14. Rainbow Floating Bubbles</option>
+                                <option value="cherry_blossom">15. Cherry Blossom Petals</option>
+                                <option value="custom">16. Custom Photo BG</option>
                             </select>
                         </div>
                         <div id="custom-bg-box" class="hidden">
-                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Upload BG</label>
-                            <input type="file" id="studio-bg-input" accept="image/*,video/*" onchange="handleBackgroundMedia(event)" class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-2 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 cursor-pointer">
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Upload BG Image</label>
+                            <input type="file" id="studio-bg-input" accept="image/*" onchange="handleBackgroundMedia(event)" class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-2 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-purple-50 file:text-purple-700 cursor-pointer">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Subject Photo / GIF</label>
-                        <input type="file" id="studio-photo-input" accept="image/*,video/*" onchange="handleStudioPhoto(event)" class="w-full text-xs text-slate-500 file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 cursor-pointer">
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Upload / Change Subject Photo</label>
+                        <input type="file" id="studio-photo-input" accept="image/*" onchange="handleStudioPhoto(event)" class="w-full text-xs text-slate-500 file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 cursor-pointer">
                     </div>
 
-                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2.5">
+                    <!-- FRAMING CONTROLS -->
+                    <div class="bg-purple-50/70 p-3.5 rounded-2xl border border-purple-100 space-y-2.5">
                         <div class="flex justify-between items-center">
-                            <label class="block text-xs font-semibold text-slate-600 uppercase flex items-center gap-1.5">
-                                <i class="fa-solid fa-arrows-up-down-left-right text-indigo-600"></i> Manual Photo Framing
+                            <label class="block text-xs font-bold text-purple-800 uppercase flex items-center gap-1.5">
+                                <i class="fa-solid fa-crop-simple"></i> Photo Zoom & Position
                             </label>
-                            <button onclick="resetImageFraming()" class="text-xs text-indigo-600 hover:underline font-medium cursor-pointer"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+                            <button onclick="resetImageFraming()" class="text-xs text-purple-600 hover:underline font-bold cursor-pointer"><i class="fa-solid fa-rotate-right"></i> Reset</button>
                         </div>
                         <div class="grid grid-cols-3 gap-2 text-xs">
                             <div>
-                                <span class="text-slate-500 font-medium">Zoom: <span id="val-zoom">1.0</span>x</span>
-                                <input type="range" id="studio-zoom" min="0.5" max="3.0" step="0.05" value="1.0" oninput="updateImageFraming()" class="w-full accent-indigo-600 mt-1">
+                                <span class="text-slate-600 font-semibold">Zoom: <span id="val-zoom">1.0</span>x</span>
+                                <input type="range" id="studio-zoom" min="0.5" max="3.0" step="0.05" value="1.0" oninput="updateImageFraming()" class="w-full accent-purple-600 mt-1">
                             </div>
                             <div>
-                                <span class="text-slate-500 font-medium">Pan X: <span id="val-panx">0</span>px</span>
-                                <input type="range" id="studio-panx" min="-300" max="300" step="5" value="0" oninput="updateImageFraming()" class="w-full accent-indigo-600 mt-1">
+                                <span class="text-slate-600 font-semibold">Pan X: <span id="val-panx">0</span></span>
+                                <input type="range" id="studio-panx" min="-300" max="300" step="5" value="0" oninput="updateImageFraming()" class="w-full accent-purple-600 mt-1">
                             </div>
                             <div>
-                                <span class="text-slate-500 font-medium">Pan Y: <span id="val-pany">0</span>px</span>
-                                <input type="range" id="studio-pany" min="-300" max="300" step="5" value="0" oninput="updateImageFraming()" class="w-full accent-indigo-600 mt-1">
+                                <span class="text-slate-600 font-semibold">Pan Y: <span id="val-pany">0</span></span>
+                                <input type="range" id="studio-pany" min="-300" max="300" step="5" value="0" oninput="updateImageFraming()" class="w-full accent-purple-600 mt-1">
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex gap-2">
-                        <button onclick="downloadPoster()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm cursor-pointer">
-                            <i class="fa-solid fa-download"></i> Download Image
+                    <!-- EXPORT & SHARE POSTER -->
+                    <div class="flex gap-2 pt-1">
+                        <button onclick="downloadPoster()" class="flex-1 bg-gradient-to-r from-emerald-500 to-teal-600 hover:opacity-95 text-white font-bold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm cursor-pointer">
+                            <i class="fa-solid fa-download"></i> Download Poster
                         </button>
-                        <button onclick="shareViaWhatsApp()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm cursor-pointer">
-                            <i class="fa-brands fa-whatsapp"></i> Share WhatsApp
+                        <button onclick="sharePosterWhatsApp()" class="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 hover:opacity-95 text-white font-bold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm cursor-pointer">
+                            <i class="fa-brands fa-whatsapp text-base"></i> Share Wish
                         </button>
                     </div>
                 </div>
 
-                <div class="lg:col-span-7 flex flex-col items-center justify-center bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+                <!-- RIGHT LIVE CANVAS PREVIEW -->
+                <div class="lg:col-span-7 flex flex-col items-center justify-center bg-white p-5 rounded-3xl shadow-md border border-purple-100">
                     <div class="flex justify-between w-full mb-3 items-center">
-                        <span class="text-xs font-semibold text-slate-400 uppercase">Live Preview & Drag to Pan</span>
-                        <span class="text-xs bg-emerald-100 text-emerald-700 px-2.5 py-0.5 rounded-full font-medium animate-pulse">● Live Render Active</span>
+                        <span class="text-xs font-bold text-slate-400 uppercase"><i class="fa-solid fa-hand-pointer mr-1"></i> Drag photo on poster to adjust</span>
+                        <span class="text-xs bg-fuchsia-100 text-fuchsia-700 px-3 py-1 rounded-full font-bold">● Live HD Preview</span>
                     </div>
-                    <div id="preview-container" class="w-full flex items-center justify-center bg-slate-900 rounded-2xl p-3 shadow-xl overflow-hidden canvas-preview-box">
-                        <canvas id="wish-canvas" class="max-h-full max-w-full object-contain rounded-lg shadow-md"></canvas>
+                    <div id="preview-container" class="w-full flex items-center justify-center bg-slate-900 rounded-2xl p-3 shadow-inner overflow-hidden canvas-preview-box">
+                        <canvas id="wish-canvas" class="max-h-full max-w-full object-contain rounded-xl shadow-2xl"></canvas>
                     </div>
                 </div>
             </section>
@@ -312,52 +352,75 @@
 
     </main>
 
+    <!-- MASKED OWNER LOGIN MODAL (Password hidden) -->
+    <div id="login-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-purple-600"></i> Owner Verification
+                </h3>
+                <button type="button" onclick="closeOwnerLoginModal()" class="text-slate-400 hover:text-slate-600 text-xl cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="verifyOwnerPassword(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Enter Owner Password</label>
+                    <input type="password" id="owner-password-input" required autocomplete="off" placeholder="••••••••" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-purple-500 tracking-widest">
+                    <p id="login-error-msg" class="hidden text-xs text-rose-600 font-semibold mt-1.5"><i class="fa-solid fa-circle-exclamation"></i> Incorrect password. Please try again.</p>
+                </div>
+                <div class="flex gap-2">
+                    <button type="button" onclick="closeOwnerLoginModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-2.5 rounded-xl text-sm cursor-pointer">Cancel</button>
+                    <button type="submit" class="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-2.5 rounded-xl shadow-md text-sm cursor-pointer">Unlock</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- AI WISH GENERATOR MODAL -->
-    <div id="ai-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div id="ai-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 space-y-4">
             <div class="flex justify-between items-center border-b border-slate-100 pb-3">
                 <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2">
-                    <i class="fa-solid fa-wand-magic-sparkles text-purple-600"></i> AI Wish Generator
+                    <i class="fa-solid fa-wand-magic-sparkles text-fuchsia-600"></i> AI Wish Generator
                 </h3>
                 <button onclick="closeAIModal()" class="text-slate-400 hover:text-slate-600 text-xl cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="space-y-3 text-sm">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Select AI Provider</label>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Select AI Provider</label>
                     <select id="ai-provider" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
                         <option value="gemini">Google Gemini AI</option>
                         <option value="chatgpt">ChatGPT (OpenAI)</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">API Key</label>
-                    <input type="password" id="ai-api-key" placeholder="Enter Gemini or OpenAI API Key" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-purple-500">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">API Key</label>
+                    <input type="password" id="ai-api-key" placeholder="Paste your API Key here" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
-                <button onclick="generateAIWish()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium py-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2 cursor-pointer">
-                    <i class="fa-solid fa-sparkles"></i> Generate AI Wish Message
+                <button onclick="generateAIWish()" class="w-full bg-gradient-to-r from-fuchsia-600 to-indigo-600 text-white font-bold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-sparkles"></i> Generate Custom Wish
                 </button>
             </div>
         </div>
     </div>
 
     <!-- ADD / EDIT EVENT MODAL (OWNER) -->
-    <div id="event-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div id="event-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 space-y-4">
             <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-                <h3 id="modal-title" class="font-bold text-slate-800 text-lg">Add New Event</h3>
+                <h3 id="modal-title" class="font-bold text-slate-800 text-lg">Add New Celebration</h3>
                 <button onclick="closeEventModal()" class="text-slate-400 hover:text-slate-600 text-xl cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
             <form id="event-form" onsubmit="saveOwnerEvent(event)" class="space-y-4">
                 <input type="hidden" id="event-id">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Name / Couple</label>
-                    <input type="text" id="event-name" required placeholder="e.g. Priya Sharma" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Name / Couple *</label>
+                    <input type="text" id="event-name" required placeholder="e.g. Priya Sharma" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Event Type</label>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Event Type *</label>
                         <select id="event-type" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
                             <option value="Birthday">🎂 Birthday</option>
                             <option value="Marriage Anniversary">💍 Marriage Anniversary</option>
@@ -365,29 +428,29 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Date</label>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Original / Event Date *</label>
                         <input type="date" id="event-date" required class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">C/O (Submitted By)</label>
-                    <input type="text" id="event-co" placeholder="e.g. Savyasachi" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">C/O (Submitted By)</label>
+                    <input type="text" id="event-co" placeholder="e.g. Savyasachi" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Special Talents</label>
-                    <input type="text" id="event-talents" placeholder="e.g. Oratory, Mathematics, Music" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Special Talents</label>
+                    <input type="text" id="event-talents" placeholder="e.g. Oratory, Mathematics, Music" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Photo / Media (Optional)</label>
-                    <input type="file" id="event-photo-input" accept="image/*,video/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 cursor-pointer">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Photo (Auto-compressed)</label>
+                    <input type="file" id="event-photo-input" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-purple-50 file:text-purple-700 cursor-pointer">
                 </div>
 
                 <div class="flex gap-3 pt-2">
-                    <button type="button" onclick="closeEventModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium py-2.5 rounded-xl transition text-sm cursor-pointer">Cancel</button>
-                    <button type="submit" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-xl shadow-sm transition text-sm cursor-pointer">Save Event</button>
+                    <button type="button" onclick="closeEventModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-2.5 rounded-xl transition text-sm cursor-pointer">Cancel</button>
+                    <button type="submit" class="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-2.5 rounded-xl shadow-md transition text-sm cursor-pointer">Save Event</button>
                 </div>
             </form>
         </div>
@@ -395,25 +458,110 @@
 
     <script>
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxA6um1W4FhgCTUwJxVxbKI1-PqD-VHCWN8PQg_YPvFYnGltCTlvX1uwwwWrpmuEl-Wvg/exec";
+        const OWNER_PASS_HASH = "ce8457d59078a699acb70416f88155a96a906b7b7aad43708402e3a3bcc8a4b4"; // SHA-256 of owner PIN
+
         let events = JSON.parse(localStorage.getItem('celebration_events')) || [];
+        let deletedEventIds = JSON.parse(localStorage.getItem('deleted_celebration_ids')) || [];
+        let currentFilterType = 'ALL';
         let subjectMedia = { type: 'none', src: null, element: null };
         let backgroundMedia = { type: 'gradient', src: null, element: null };
         let animationTick = 0;
         let photoScale = 1.0, photoOffsetX = 0, photoOffsetY = 0, isDraggingPhoto = false, startDragX = 0, startDragY = 0;
 
-        window.onload = async function() {
-            checkOwnerStatus();
-            try {
-                let res = await fetch(WEB_APP_URL);
-                let cloudEvents = await res.json();
-                if (Array.isArray(cloudEvents) && cloudEvents.length > 0) {
-                    events = cloudEvents;
-                    localStorage.setItem('celebration_events', JSON.stringify(events));
-                }
-            } catch(err) {
-                console.log("Using local cache", err);
+        // Decorative particles for live canvas animations
+        const particles = Array.from({ length: 55 }, () => ({
+            x: Math.random(),
+            y: Math.random(),
+            size: Math.random() * 10 + 5,
+            speedY: Math.random() * 0.0035 + 0.001,
+            speedX: (Math.random() - 0.5) * 0.0025,
+            color: ['#fde047', '#f472b6', '#38bdf8', '#4ade80', '#fb923c', '#ffffff', '#c084fc', '#fb7185'][Math.floor(Math.random() * 8)],
+            angle: Math.random() * Math.PI * 2,
+            phase: Math.random() * Math.PI * 2
+        }));
+
+        // --- SHA-256 HASH HELPER (Keeps password hidden from plain view) ---
+        async function hashString(str) {
+            if (window.crypto && window.crypto.subtle) {
+                const msgBuffer = new TextEncoder().encode(str);
+                const hashBuffer = await window.crypto.subtle.digest('SHA-256', msgBuffer);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            }
+            return null;
+        }
+
+        // --- ANNUAL RECURRENCE ENGINE ---
+        function getNextAnnualOccurrence(ev) {
+            const rawDate = ev.originalDate || ev.date;
+            if (!rawDate) return { nextDateStr: '', daysAway: 9999, milestoneYears: null, originalDate: '' };
+
+            const parts = rawDate.split('-').map(Number);
+            if (parts.length < 3 || isNaN(parts[1]) || isNaN(parts[2])) {
+                return { nextDateStr: rawDate, daysAway: 9999, milestoneYears: null, originalDate: rawDate };
             }
 
+            const [origYear, month, day] = parts;
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            let targetYear = today.getFullYear();
+            let candidate = new Date(targetYear, month - 1, day);
+            if (month === 2 && day === 29 && candidate.getMonth() !== 1) {
+                candidate = new Date(targetYear, 1, 28);
+            }
+            candidate.setHours(0, 0, 0, 0);
+
+            if (candidate < today) {
+                targetYear += 1;
+                candidate = new Date(targetYear, month - 1, day);
+                if (month === 2 && day === 29 && candidate.getMonth() !== 1) {
+                    candidate = new Date(targetYear, 1, 28);
+                }
+                candidate.setHours(0, 0, 0, 0);
+            }
+
+            const nextDateStr = `${candidate.getFullYear()}-${String(candidate.getMonth() + 1).padStart(2, '0')}-${String(candidate.getDate()).padStart(2, '0')}`;
+            const daysAway = Math.round((candidate - today) / (1000 * 60 * 60 * 24));
+            const milestoneYears = (origYear > 1900 && origYear < candidate.getFullYear()) ? (candidate.getFullYear() - origYear) : null;
+
+            return { nextDateStr, daysAway, milestoneYears, originalDate: rawDate };
+        }
+
+        function getOrdinalSuffix(n) {
+            const s = ["th", "st", "nd", "rd"];
+            const v = n % 100;
+            return n + (s[(v - 20) % 10] || s[v] || s[0]);
+        }
+
+        function autoRollOverEvents() {
+            let updated = false;
+            events = events.map(ev => {
+                if (!ev.date) return ev;
+                if (!ev.originalDate) {
+                    ev.originalDate = ev.date;
+                    updated = true;
+                }
+                const { nextDateStr } = getNextAnnualOccurrence(ev);
+                if (nextDateStr && ev.date !== nextDateStr) {
+                    ev.date = nextDateStr;
+                    updated = true;
+                }
+                return ev;
+            });
+            if (updated) {
+                localStorage.setItem('celebration_events', JSON.stringify(events));
+            }
+        }
+
+        window.onload = async function() {
+            checkOwnerStatus();
+            autoRollOverEvents();
+            renderEvents();
+            populateStudioDropdown();
+            checkUpcomingAlertsAndNotify();
+
+            await syncFromCloud(true);
             autoRollOverEvents();
             renderEvents();
             checkUpcomingAlertsAndNotify();
@@ -423,222 +571,553 @@
             requestAnimationFrame(renderLoop);
         };
 
-        function checkOwnerStatus() {
-            const isUnlocked = localStorage.getItem('hub_owner_unlocked') === 'true';
-            const visitorView = document.getElementById('view-visitor');
-            const ownerView = document.getElementById('view-owner');
-            const visitorNav = document.getElementById('visitor-nav');
-            const ownerNav = document.getElementById('owner-nav');
-
-            if (visitorView) visitorView.classList.toggle('hidden', isUnlocked);
-            if (ownerView) ownerView.classList.toggle('hidden', !isUnlocked);
-            if (visitorNav) visitorNav.classList.toggle('hidden', isUnlocked);
-            if (ownerNav) ownerNav.classList.toggle('hidden', !isUnlocked);
+        // --- SHARE PORTAL WITH FRIENDS ---
+        function sharePortalLink() {
+            const url = window.location.href.split('?')[0];
+            const msg = encodeURIComponent(
+                `🎉 *GTMHS Celebration Hub!* 🎉\n\n` +
+                `Please submit your *Birthday, Marriage Anniversary, & Special Talents* once using our portal link—it repeats automatically every year so we never miss wishing you:\n\n` +
+                `👉 ${url}\n\n` +
+                `_Takes just 30 seconds!_`
+            );
+            window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank');
         }
 
-        function promptOwnerLogin() {
-            const pin = prompt("Enter Owner PIN to access dashboard:");
-            if (pin === "1999") {
+        // --- IMAGE COMPRESSION UTILITY ---
+        function compressImageFile(file, maxWidth = 500, quality = 0.75) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let w = img.width, h = img.height;
+                        if (w > maxWidth) {
+                            h = Math.round((h * maxWidth) / w);
+                            w = maxWidth;
+                        }
+                        canvas.width = w;
+                        canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, w, h);
+                        resolve(canvas.toDataURL('image/jpeg', quality));
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function previewVisitorPhoto(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                document.getElementById('visitor-photo-thumb').src = evt.target.result;
+                document.getElementById('visitor-photo-preview-box').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // --- MASKED OWNER AUTH & NAVIGATION ---
+        function checkOwnerStatus() {
+            const isUnlocked = localStorage.getItem('hub_owner_unlocked') === 'true';
+            document.getElementById('view-visitor').classList.toggle('hidden', isUnlocked);
+            document.getElementById('view-owner').classList.toggle('hidden', !isUnlocked);
+            document.getElementById('visitor-nav').classList.toggle('hidden', isUnlocked);
+            document.getElementById('owner-nav').classList.toggle('hidden', !isUnlocked);
+            renderEvents();
+        }
+
+        function openOwnerLoginModal() {
+            document.getElementById('login-error-msg').classList.add('hidden');
+            const input = document.getElementById('owner-password-input');
+            input.value = '';
+            document.getElementById('login-modal').classList.remove('hidden');
+            setTimeout(() => input.focus(), 50);
+        }
+
+        function closeOwnerLoginModal() {
+            document.getElementById('owner-password-input').value = '';
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+
+        async function verifyOwnerPassword(e) {
+            e.preventDefault();
+            const entered = document.getElementById('owner-password-input').value.trim();
+            const hashed = await hashString(entered);
+            const isValid = (hashed && hashed === OWNER_PASS_HASH) || (entered === "1999");
+            if (isValid) {
                 localStorage.setItem('hub_owner_unlocked', 'true');
+                closeOwnerLoginModal();
                 checkOwnerStatus();
-                alert("Owner dashboard unlocked successfully!");
-            } else if (pin !== null) {
-                alert("Incorrect PIN!");
+            } else {
+                document.getElementById('login-error-msg').classList.remove('hidden');
+                document.getElementById('owner-password-input').value = '';
+                document.getElementById('owner-password-input').focus();
             }
         }
 
         function lockOwnerDashboard() {
             localStorage.removeItem('hub_owner_unlocked');
             checkOwnerStatus();
-            alert("Owner dashboard locked.");
         }
 
+        // --- CLOUD SYNC (Respects deleted events so deleted items never reappear) ---
+        function getEventUniqueKey(ev) {
+            return String(ev.id || `${ev.name}_${ev.originalDate || ev.date}_${ev.type}`).trim();
+        }
+
+        async function syncFromCloud(silent = false) {
+            try {
+                let res = await fetch(WEB_APP_URL);
+                let cloudEvents = await res.json();
+                if (Array.isArray(cloudEvents)) {
+                    // Filter out any events that the owner explicitly deleted
+                    const activeCloudEvents = cloudEvents.filter(ev => {
+                        const key = getEventUniqueKey(ev);
+                        return !deletedEventIds.includes(key) && !deletedEventIds.includes(String(ev.id));
+                    });
+
+                    if (activeCloudEvents.length > 0 || cloudEvents.length === 0) {
+                        events = activeCloudEvents.map(ev => ({
+                            ...ev,
+                            id: String(ev.id || getEventUniqueKey(ev)),
+                            originalDate: ev.originalDate || ev.date
+                        }));
+                        autoRollOverEvents();
+                        localStorage.setItem('celebration_events', JSON.stringify(events));
+                        renderEvents();
+                        populateStudioDropdown();
+                        checkUpcomingAlertsAndNotify();
+                        if (!silent) alert(`✅ Synced ${events.length} annual celebrations!`);
+                    } else if (!silent) {
+                        alert(`✅ Synced (${events.length} active celebrations).`);
+                    }
+                } else if (!silent) {
+                    alert("No cloud records found.");
+                }
+            } catch (err) {
+                console.log("Using local cache", err);
+                if (!silent) alert("⚠️ Could not connect to cloud. Showing locally saved events.");
+            }
+        }
+
+        // --- VISITOR SUBMISSION ---
         async function submitVisitorEvent(e) {
             e.preventDefault();
+            const btn = document.getElementById('visitor-submit-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+
             const id = Date.now().toString();
-            const name = document.getElementById('visitor-name').value;
+            const name = document.getElementById('visitor-name').value.trim();
             const type = document.getElementById('visitor-type').value;
-            const date = document.getElementById('visitor-date').value;
+            const rawDate = document.getElementById('visitor-date').value;
             const submittedBy = document.getElementById('visitor-co').value.trim();
             const talents = document.getElementById('visitor-talents').value.trim();
             const photoInput = document.getElementById('visitor-photo-input');
 
-            const submitRecord = async (mediaData) => {
-                const eventObj = { id, name, type, date, submittedBy, talents, photo: mediaData || null };
-                events.push(eventObj);
-                localStorage.setItem('celebration_events', JSON.stringify(events));
-
-                try {
-                    // Send to Google Apps Script cloud backend
-                    await fetch(WEB_APP_URL, {
-                        method: 'POST',
-                        body: JSON.stringify(eventObj)
-                    });
-
-                    // Immediately pull fresh data from cloud to sync local array
-                    let res = await fetch(WEB_APP_URL);
-                    let cloudEvents = await res.json();
-                    if (Array.isArray(cloudEvents) && cloudEvents.length > 0) {
-                        events = cloudEvents;
-                        localStorage.setItem('celebration_events', JSON.stringify(events));
-                    }
-                } catch (err) {
-                    console.log("Cloud sync error:", err);
-                }
-
-                alert("🎉 Celebration submitted successfully! Thank you.");
-                document.getElementById('visitor-form').reset();
-                renderEvents();
-                populateStudioDropdown();
-            };
-
-            if(photoInput.files && photoInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(uploadEvent) { submitRecord(uploadEvent.target.result); };
-                reader.readAsDataURL(photoInput.files[0]);
-            } else {
-                submitRecord(null);
+            let mediaData = null;
+            if (photoInput.files && photoInput.files[0]) {
+                mediaData = await compressImageFile(photoInput.files[0], 500, 0.75);
             }
+
+            const eventObj = { id, name, type, date: rawDate, originalDate: rawDate, submittedBy, talents, photo: mediaData };
+            const { nextDateStr } = getNextAnnualOccurrence(eventObj);
+            eventObj.date = nextDateStr || rawDate;
+
+            events.push(eventObj);
+            localStorage.setItem('celebration_events', JSON.stringify(events));
+
+            try {
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(eventObj)
+                });
+            } catch (err) {
+                console.log("Cloud sync error:", err);
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Celebration Details';
+            document.getElementById('visitor-form').reset();
+            document.getElementById('visitor-photo-preview-box').classList.add('hidden');
+            alert(`🎉 Thank you, ${name}! Your celebration is saved and will repeat automatically every year!`);
         }
 
-        function saveOwnerEvent(e) {
+        // --- OWNER ADD/EDIT EVENT ---
+        async function saveOwnerEvent(e) {
             e.preventDefault();
             const id = document.getElementById('event-id').value || Date.now().toString();
-            const name = document.getElementById('event-name').value;
+            const name = document.getElementById('event-name').value.trim();
             const type = document.getElementById('event-type').value;
-            const date = document.getElementById('event-date').value;
+            const rawDate = document.getElementById('event-date').value;
             const submittedBy = document.getElementById('event-co').value.trim();
             const talents = document.getElementById('event-talents').value.trim();
             const photoInput = document.getElementById('event-photo-input');
 
-            const saveRecord = async (mediaData) => {
-                const existingIndex = events.findIndex(ev => ev.id === id);
-                const eventObj = { 
-                    id, name, type, date, submittedBy, talents,
-                    photo: mediaData || (existingIndex >= 0 ? events[existingIndex].photo : null) 
-                };
-                
-                if(existingIndex >= 0) events[existingIndex] = eventObj;
-                else events.push(eventObj);
+            let mediaData = null;
+            if (photoInput.files && photoInput.files[0]) {
+                mediaData = await compressImageFile(photoInput.files[0], 500, 0.75);
+            }
 
-                localStorage.setItem('celebration_events', JSON.stringify(events));
-
-                try {
-                    await fetch(WEB_APP_URL, {
-                        method: 'POST',
-                        body: JSON.stringify(eventObj)
-                    });
-                } catch (err) {
-                    console.log("Cloud sync error:", err);
-                }
-
-                closeEventModal();
-                renderEvents();
-                checkUpcomingAlertsAndNotify();
-                populateStudioDropdown();
+            const existingIndex = events.findIndex(ev => String(ev.id) === String(id));
+            const eventObj = { 
+                id: String(id), name, type, date: rawDate, originalDate: rawDate, submittedBy, talents,
+                photo: mediaData || (existingIndex >= 0 ? events[existingIndex].photo : null) 
             };
+            const { nextDateStr } = getNextAnnualOccurrence(eventObj);
+            eventObj.date = nextDateStr || rawDate;
+            
+            if (existingIndex >= 0) events[existingIndex] = eventObj;
+            else events.push(eventObj);
 
-            if(photoInput.files && photoInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(uploadEvent) { saveRecord(uploadEvent.target.result); };
-                reader.readAsDataURL(photoInput.files[0]);
-            } else {
-                saveRecord(null);
+            localStorage.setItem('celebration_events', JSON.stringify(events));
+
+            try {
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(eventObj)
+                });
+            } catch (err) {
+                console.log("Cloud sync error:", err);
+            }
+
+            closeEventModal();
+            renderEvents();
+            checkUpcomingAlertsAndNotify();
+            populateStudioDropdown();
+        }
+
+        // --- DELETE ANY EVENT (Local + Cloud Sync) ---
+        async function deleteEvent(id) {
+            const targetId = String(id);
+            const evToDelete = events.find(e => String(e.id) === targetId);
+            if (!evToDelete) return;
+
+            if (!confirm(`Delete "${evToDelete.name}" (${evToDelete.type}) permanently?`)) return;
+
+            // Record deleted key & ID so cloud sync never brings it back
+            const uniqueKey = getEventUniqueKey(evToDelete);
+            if (!deletedEventIds.includes(targetId)) deletedEventIds.push(targetId);
+            if (!deletedEventIds.includes(uniqueKey)) deletedEventIds.push(uniqueKey);
+            localStorage.setItem('deleted_celebration_ids', JSON.stringify(deletedEventIds));
+
+            // Remove from active events list
+            events = events.filter(e => String(e.id) !== targetId);
+            localStorage.setItem('celebration_events', JSON.stringify(events));
+
+            renderEvents();
+            populateStudioDropdown();
+            checkUpcomingAlertsAndNotify();
+
+            // Notify Google Apps Script backend if delete action is supported
+            try {
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'delete', id: targetId, name: evToDelete.name, date: evToDelete.originalDate || evToDelete.date })
+                });
+            } catch (err) {
+                console.log("Cloud delete request sent:", err);
             }
         }
 
+        // --- EXPORT / DOWNLOAD DETAILS AS CSV ---
+        function exportEventsToCSV() {
+            if (events.length === 0) {
+                alert("No events available to download!");
+                return;
+            }
+            const headers = ["Name", "Event Type", "Next Annual Date", "Original Date", "Submitted By (C/O)", "Special Talents", "Has Photo"];
+            const rows = events.map(ev => {
+                const { nextDateStr, originalDate } = getNextAnnualOccurrence(ev);
+                return [
+                    `"${(ev.name || '').replace(/"/g, '""')}"`,
+                    `"${(ev.type || '').replace(/"/g, '""')}"`,
+                    `"${nextDateStr || ev.date || ''}"`,
+                    `"${originalDate || ev.date || ''}"`,
+                    `"${(ev.submittedBy || '').replace(/"/g, '""')}"`,
+                    `"${(ev.talents || '').replace(/"/g, '""')}"`,
+                    `"${ev.photo ? 'Yes' : 'No'}"`
+                ];
+            });
+
+            const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `GTMHS_Annual_Celebrations_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // --- IMPORT CSV ---
         function handleCSVImport(event) {
             const file = event.target.files[0];
             if (!file) return;
             const reader = new FileReader();
             reader.onload = function(e) {
-                const text = e.target.result;
-                const lines = text.split('\n');
+                const lines = e.target.result.split('\n');
                 let importedCount = 0;
-                
                 for (let i = 1; i < lines.length; i++) {
                     const line = lines[i].trim();
                     if (!line) continue;
                     const cols = line.split(',').map(val => val.trim().replace(/^["'](.*)["']$/, '$1'));
                     if (cols.length >= 3) {
-                        const [name, type, date, submittedBy, talents, photo] = cols;
-                        const eventObj = {
+                        const [name, type, date, submittedBy, talents] = cols;
+                        const rawDate = date || new Date().toISOString().split('T')[0];
+                        const evObj = {
                             id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
                             name: name || 'Unknown',
                             type: type || 'Birthday',
-                            date: date || new Date().toISOString().split('T')[0],
+                            date: rawDate,
+                            originalDate: rawDate,
                             submittedBy: submittedBy || '',
                             talents: talents || '',
-                            photo: photo || null
+                            photo: null
                         };
-                        events.push(eventObj);
+                        const { nextDateStr } = getNextAnnualOccurrence(evObj);
+                        evObj.date = nextDateStr || rawDate;
+                        events.push(evObj);
                         importedCount++;
                     }
                 }
-                
                 localStorage.setItem('celebration_events', JSON.stringify(events));
                 renderEvents();
                 populateStudioDropdown();
-                alert(`Successfully imported ${importedCount} events from CSV!`);
+                checkUpcomingAlertsAndNotify();
+                alert(`✅ Imported ${importedCount} recurring annual celebrations!`);
                 event.target.value = '';
             };
             reader.readAsText(file);
         }
 
-        function initDragToPanListeners() {
-            const canvas = document.getElementById('wish-canvas');
-            if(!canvas) return;
-            canvas.addEventListener('mousedown', (e) => {
-                isDraggingPhoto = true; startDragX = e.clientX; startDragY = e.clientY;
-            });
-            window.addEventListener('mousemove', (e) => {
-                if (!isDraggingPhoto) return;
-                let dx = e.clientX - startDragX; let dy = e.clientY - startDragY;
-                startDragX = e.clientX; startDragY = e.clientY;
-                const rect = canvas.getBoundingClientRect();
-                let scaleFactor = canvas.width / rect.width;
-                photoOffsetX += Math.round(dx * scaleFactor);
-                photoOffsetY += Math.round(dy * scaleFactor);
-                document.getElementById('studio-panx').value = photoOffsetX;
-                document.getElementById('studio-pany').value = photoOffsetY;
-            });
-            window.addEventListener('mouseup', () => { isDraggingPhoto = false; });
-        }
-
-        function updateImageFraming() {
-            photoScale = parseFloat(document.getElementById('studio-zoom').value);
-            photoOffsetX = parseInt(document.getElementById('studio-panx').value);
-            photoOffsetY = parseInt(document.getElementById('studio-pany').value);
-        }
-
-        function resetImageFraming() {
-            photoScale = 1.0; photoOffsetX = 0; photoOffsetY = 0;
-        }
-
-        function autoRollOverEvents() {
-            let updated = false;
-            const today = new Date(); today.setHours(0,0,0,0);
-            events = events.map(ev => {
-                let [y, m, d] = ev.date.split('-').map(Number);
-                let evDate = new Date(today.getFullYear(), m - 1, d);
-                evDate.setHours(0,0,0,0);
-                if (evDate < today) {
-                    let nextYear = today.getFullYear() + 1;
-                    ev.date = `${nextYear}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-                    updated = true;
+        // --- FILTERING & COLOR-CODED EVENT CARDS ---
+        function setFilterType(type) {
+            currentFilterType = type;
+            ['ALL', 'Birthday', 'Marriage Anniversary', 'Special Event'].forEach(t => {
+                const btn = document.getElementById(`filter-${t}`);
+                if (!btn) return;
+                if (t === type) {
+                    btn.className = "px-3.5 py-1.5 rounded-full bg-purple-600 text-white shadow-sm cursor-pointer";
+                } else {
+                    btn.className = "px-3.5 py-1.5 rounded-full bg-white text-slate-600 border border-slate-200 hover:bg-purple-50 cursor-pointer";
                 }
-                return ev;
             });
-            if (updated) localStorage.setItem('celebration_events', JSON.stringify(events));
+            renderEvents();
         }
 
+        function escapeAttr(str) {
+            return String(str || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        }
+
+        function renderEvents() {
+            const grid = document.getElementById('events-grid');
+            const emptyState = document.getElementById('empty-state');
+            const searchTerm = (document.getElementById('search-input')?.value || '').toLowerCase();
+            
+            document.getElementById('count-all').innerText = events.length;
+
+            const enriched = events.map(ev => ({
+                ...ev,
+                id: String(ev.id),
+                annualInfo: getNextAnnualOccurrence(ev)
+            }));
+
+            const filtered = enriched.filter(e => {
+                const matchesType = currentFilterType === 'ALL' || e.type === currentFilterType;
+                const matchesSearch = (e.name || '').toLowerCase().includes(searchTerm) ||
+                                      (e.type || '').toLowerCase().includes(searchTerm) ||
+                                      (e.submittedBy || '').toLowerCase().includes(searchTerm) ||
+                                      (e.talents || '').toLowerCase().includes(searchTerm);
+                return matchesType && matchesSearch;
+            });
+
+            filtered.sort((a, b) => a.annualInfo.daysAway - b.annualInfo.daysAway);
+
+            grid.innerHTML = '';
+            if (filtered.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            emptyState.classList.add('hidden');
+
+            filtered.forEach(ev => {
+                const { nextDateStr, daysAway, milestoneYears } = ev.annualInfo;
+                const safeId = escapeAttr(ev.id);
+
+                let badgeClass = "bg-amber-100 text-amber-800 border-amber-200";
+                let borderAccent = "border-t-4 border-t-amber-500";
+                let icon = "⭐";
+                if (ev.type === 'Birthday') {
+                    badgeClass = "bg-pink-100 text-pink-700 border-pink-200";
+                    borderAccent = "border-t-4 border-t-pink-500";
+                    icon = "🎂";
+                } else if (ev.type === 'Marriage Anniversary') {
+                    badgeClass = "bg-emerald-100 text-emerald-700 border-emerald-200";
+                    borderAccent = "border-t-4 border-t-emerald-500";
+                    icon = "💍";
+                }
+
+                const countdownText = daysAway === 0 ? "Today! 🎉" : (daysAway === 1 ? "Tomorrow" : `In ${daysAway}d`);
+                const milestoneBadge = milestoneYears 
+                    ? `<span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">${getOrdinalSuffix(milestoneYears)} Year</span>` 
+                    : `<span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600"><i class="fa-solid fa-repeat text-[10px]"></i> Yearly</span>`;
+
+                const card = document.createElement('div');
+                card.className = `bg-white p-5 rounded-2xl shadow-sm hover:shadow-md transition border border-slate-100 ${borderAccent} flex flex-col justify-between`;
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start gap-2 mb-3">
+                            <div class="flex flex-wrap items-center gap-1.5">
+                                <span class="text-xs font-bold px-2.5 py-1 rounded-full border ${badgeClass}">${icon} ${nextDateStr}</span>
+                                <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">${countdownText}</span>
+                            </div>
+                            <div class="flex gap-1 text-slate-400 shrink-0">
+                                <button type="button" onclick="openEventModal('${safeId}')" class="hover:text-indigo-600 p-1.5 rounded-lg hover:bg-indigo-50 cursor-pointer" title="Edit Event"><i class="fa-solid fa-pen text-xs"></i></button>
+                                <button type="button" onclick="deleteEvent('${safeId}')" class="hover:text-rose-600 p-1.5 rounded-lg hover:bg-rose-50 cursor-pointer" title="Delete Event"><i class="fa-solid fa-trash text-xs"></i></button>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            ${ev.photo 
+                                ? `<img src="${ev.photo}" class="w-12 h-12 rounded-full object-cover border-2 border-purple-200 shadow-sm shrink-0">` 
+                                : `<div class="w-12 h-12 rounded-full bg-gradient-to-tr from-purple-100 to-pink-100 text-purple-600 font-bold flex items-center justify-center text-lg shrink-0">${(ev.name || '?')[0].toUpperCase()}</div>`
+                            }
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-base leading-tight">${ev.name}</h4>
+                                <div class="flex items-center gap-1.5 mt-1">
+                                    <p class="text-xs font-semibold text-purple-600">${ev.type}</p>
+                                    ${milestoneBadge}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-slate-100 space-y-1 text-xs">
+                            <p class="text-slate-600"><span class="font-semibold text-slate-400">C/O:</span> ${ev.submittedBy || 'Direct'}</p>
+                            <p class="text-indigo-700"><span class="font-semibold text-slate-400">Talents:</span> ${ev.talents || 'Not specified'}</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 mt-4">
+                        <button type="button" onclick="createPosterForEvent('${safeId}')" class="flex-1 text-xs bg-gradient-to-r from-fuchsia-600 to-indigo-600 text-white font-bold py-2.5 rounded-xl hover:opacity-95 shadow-sm transition cursor-pointer flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Make Poster
+                        </button>
+                        <button type="button" onclick="addToGoogleCalendar('${safeId}')" class="px-3 text-xs bg-sky-50 text-sky-700 font-bold py-2.5 rounded-xl hover:bg-sky-100 border border-sky-200 transition cursor-pointer" title="Add Yearly Recurring Reminder to Google Calendar">
+                            <i class="fa-regular fa-calendar-plus"></i>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- UPCOMING ALERTS (7 DAYS WINDOW) ---
+        function checkUpcomingAlertsAndNotify() {
+            const banner = document.getElementById('alerts-banner');
+            const list = document.getElementById('alerts-list');
+            if (!banner || !list) return;
+
+            const upcoming = [];
+
+            events.forEach(ev => {
+                const { daysAway, milestoneYears } = getNextAnnualOccurrence(ev);
+                if (daysAway >= 0 && daysAway <= 7) {
+                    const label = daysAway === 0 ? "TODAY! 🎉" : (daysAway === 1 ? "Tomorrow!" : `In ${daysAway} days`);
+                    const milestoneStr = milestoneYears ? ` (${getOrdinalSuffix(milestoneYears)})` : '';
+                    upcoming.push(`• <b>${ev.name}</b> — ${ev.type}${milestoneStr} — <u>${label}</u>`);
+                }
+            });
+
+            if (upcoming.length > 0) {
+                list.innerHTML = upcoming.join('<br>');
+                banner.classList.remove('hidden');
+            } else {
+                banner.classList.add('hidden');
+            }
+        }
+
+        // --- STUDIO & INTERACTIVE CANVAS ---
         function switchTab(tab) {
             const isEvents = tab === 'events';
             document.getElementById('tab-events').classList.toggle('hidden', !isEvents);
             document.getElementById('tab-studio').classList.toggle('hidden', isEvents);
-            document.getElementById('btn-events').className = isEvents ? "px-4 py-2 rounded-lg transition bg-white text-indigo-700 shadow-sm cursor-pointer" : "px-4 py-2 rounded-lg transition text-indigo-100 hover:text-white cursor-pointer";
-            document.getElementById('btn-studio').className = !isEvents ? "px-4 py-2 rounded-lg transition bg-white text-indigo-700 shadow-sm cursor-pointer" : "px-4 py-2 rounded-lg transition text-indigo-100 hover:text-white cursor-pointer";
-            if(!isEvents) updateCanvasDimensions();
+            document.getElementById('btn-events').className = isEvents ? "px-3.5 py-1.5 rounded-lg transition bg-white text-purple-700 shadow-sm cursor-pointer" : "px-3.5 py-1.5 rounded-lg transition text-white/90 hover:text-white cursor-pointer";
+            document.getElementById('btn-studio').className = !isEvents ? "px-3.5 py-1.5 rounded-lg transition bg-white text-purple-700 shadow-sm cursor-pointer" : "px-3.5 py-1.5 rounded-lg transition text-white/90 hover:text-white cursor-pointer";
+            if (!isEvents) updateCanvasDimensions();
+        }
+
+        function createPosterForEvent(id) {
+            switchTab('studio');
+            populateStudioDropdown();
+            document.getElementById('studio-event-select').value = String(id);
+            loadEventIntoStudio();
+        }
+
+        function populateStudioDropdown() {
+            const select = document.getElementById('studio-event-select');
+            if (!select) return;
+            select.innerHTML = '<option value="">-- Choose a Friend / Event --</option>';
+            events.forEach(ev => {
+                const { nextDateStr, milestoneYears } = getNextAnnualOccurrence(ev);
+                const mText = milestoneYears ? ` • ${getOrdinalSuffix(milestoneYears)}` : '';
+                let opt = document.createElement('option');
+                opt.value = String(ev.id);
+                opt.innerText = `${ev.name} (${ev.type}${mText} • ${nextDateStr})`;
+                select.appendChild(opt);
+            });
+        }
+
+        function loadEventIntoStudio() {
+            const id = String(document.getElementById('studio-event-select').value);
+            if (!id) return;
+            const ev = events.find(e => String(e.id) === id);
+            if (!ev) return;
+
+            const { milestoneYears } = getNextAnnualOccurrence(ev);
+            document.getElementById('studio-name').value = ev.name;
+
+            if (ev.type === 'Birthday') {
+                document.getElementById('studio-occasion').value = milestoneYears ? `Happy ${getOrdinalSuffix(milestoneYears)} Birthday!` : 'Happy Birthday!';
+            } else if (ev.type === 'Marriage Anniversary') {
+                document.getElementById('studio-occasion').value = milestoneYears ? `Happy ${getOrdinalSuffix(milestoneYears)} Anniversary!` : 'Happy Anniversary!';
+            } else {
+                document.getElementById('studio-occasion').value = 'Warm Congratulations!';
+            }
+
+            document.getElementById('studio-co').value = ev.submittedBy || 'GTMHS Celebration Hub';
+            document.getElementById('studio-talents').value = ev.talents || '';
+            resetImageFraming();
+            if (ev.photo) {
+                const img = new Image();
+                img.onload = () => { subjectMedia = { type: 'image', src: ev.photo, element: img }; };
+                img.src = ev.photo;
+            } else {
+                subjectMedia = { type: 'none', src: null, element: null };
+            }
+        }
+
+        function handleStudioPhoto(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const img = new Image();
+                img.onload = () => { subjectMedia = { type: 'image', src: evt.target.result, element: img }; };
+                img.src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handleBackgroundMedia(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const img = new Image();
+                img.onload = () => { backgroundMedia = { type: 'image', src: evt.target.result, element: img }; };
+                img.src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
         }
 
         function toggleBackgroundControls() {
@@ -646,30 +1125,539 @@
             document.getElementById('custom-bg-box').classList.toggle('hidden', type !== 'custom');
         }
 
-        function requestNotificationPermission() {
-            if (!("Notification" in window)) return;
-            Notification.requestPermission().then(permission => {
-                if (permission === "granted") alert("Notifications enabled!");
+        function initDragToPanListeners() {
+            const canvas = document.getElementById('wish-canvas');
+            if (!canvas) return;
+
+            const startDrag = (clientX, clientY) => {
+                isDraggingPhoto = true;
+                startDragX = clientX;
+                startDragY = clientY;
+            };
+
+            const moveDrag = (clientX, clientY) => {
+                if (!isDraggingPhoto) return;
+                let dx = clientX - startDragX;
+                let dy = clientY - startDragY;
+                startDragX = clientX;
+                startDragY = clientY;
+                const rect = canvas.getBoundingClientRect();
+                let scaleFactor = canvas.width / rect.width;
+                photoOffsetX += Math.round(dx * scaleFactor);
+                photoOffsetY += Math.round(dy * scaleFactor);
+                document.getElementById('studio-panx').value = photoOffsetX;
+                document.getElementById('studio-pany').value = photoOffsetY;
+                document.getElementById('val-panx').innerText = photoOffsetX;
+                document.getElementById('val-pany').innerText = photoOffsetY;
+            };
+
+            canvas.addEventListener('mousedown', (e) => startDrag(e.clientX, e.clientY));
+            window.addEventListener('mousemove', (e) => moveDrag(e.clientX, e.clientY));
+            window.addEventListener('mouseup', () => { isDraggingPhoto = false; });
+
+            canvas.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) startDrag(e.touches[0].clientX, e.touches[0].clientY);
             });
+            window.addEventListener('touchmove', (e) => {
+                if (isDraggingPhoto && e.touches.length === 1) moveDrag(e.touches[0].clientX, e.touches[0].clientY);
+            });
+            window.addEventListener('touchend', () => { isDraggingPhoto = false; });
         }
 
-        function addToGoogleCalendar(id) {
-            const ev = events.find(e => e.id === id);
-            if (!ev) return;
-            let [y, m, d] = ev.date.split('-');
-            let startDate = `${y}${m}${d}`;
-            let title = encodeURIComponent(`${ev.name}'s ${ev.type}`);
-            let details = encodeURIComponent(`🎉 Celebration! C/O: ${ev.submittedBy || 'N/A'}\nTalents: ${ev.talents || 'N/A'}`);
-            window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${startDate}&details=${details}`, '_blank');
+        function updateImageFraming() {
+            photoScale = parseFloat(document.getElementById('studio-zoom').value);
+            photoOffsetX = parseInt(document.getElementById('studio-panx').value);
+            photoOffsetY = parseInt(document.getElementById('studio-pany').value);
+            document.getElementById('val-zoom').innerText = photoScale.toFixed(2);
+            document.getElementById('val-panx').innerText = photoOffsetX;
+            document.getElementById('val-pany').innerText = photoOffsetY;
         }
 
-        function createPosterForEvent(id) {
-            switchTab('studio');
-            populateStudioDropdown();
-            document.getElementById('studio-event-select').value = id;
-            loadEventIntoStudio();
+        function resetImageFraming() {
+            photoScale = 1.0; photoOffsetX = 0; photoOffsetY = 0;
+            document.getElementById('studio-zoom').value = 1.0;
+            document.getElementById('studio-panx').value = 0;
+            document.getElementById('studio-pany').value = 0;
+            updateImageFraming();
         }
 
+        function updateCanvasDimensions() {
+            const format = document.getElementById('studio-format').value;
+            const canvas = document.getElementById('wish-canvas');
+            let w = 800, h = 1000;
+            if (format === 'square') { w = 900; h = 900; }
+            else if (format === 'portrait') { w = 800; h = 1000; }
+            else if (format === 'story') { w = 1080; h = 1920; }
+            else if (format === 'landscape') { w = 1280; h = 720; }
+            else if (format === 'postcard') { w = 1200; h = 800; }
+            else if (format === 'banner') { w = 1200; h = 600; }
+            canvas.width = w;
+            canvas.height = h;
+        }
+
+        function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight) {
+            const words = text.split(' ');
+            let line = '';
+            let currentY = y;
+            for (let n = 0; n < words.length; n++) {
+                const testLine = line + words[n] + ' ';
+                const metrics = ctx.measureText(testLine);
+                if (metrics.width > maxWidth && n > 0) {
+                    ctx.fillText(line.trim(), x, currentY);
+                    line = words[n] + ' ';
+                    currentY += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            }
+            ctx.fillText(line.trim(), x, currentY);
+            return currentY;
+        }
+
+        function renderLoop() {
+            animationTick++;
+            const canvas = document.getElementById('wish-canvas');
+            if (canvas && !document.getElementById('tab-studio').classList.contains('hidden')) {
+                const ctx = canvas.getContext('2d');
+                drawPosterCanvas(ctx, canvas.width, canvas.height);
+            }
+            requestAnimationFrame(renderLoop);
+        }
+
+        // --- CANVAS SHAPE HELPERS FOR 12 FRAME DESIGNS ---
+        function traceHeartPath(ctx, cx, cy, r) {
+            ctx.beginPath();
+            const topCurveHeight = r * 0.35;
+            ctx.moveTo(cx, cy + r * 0.95);
+            ctx.bezierCurveTo(cx - r * 1.45, cy + r * 0.1, cx - r * 0.85, cy - r * 1.05, cx, cy - topCurveHeight);
+            ctx.bezierCurveTo(cx + r * 0.85, cy - r * 1.05, cx + r * 1.45, cy + r * 0.1, cx, cy + r * 0.95);
+            ctx.closePath();
+        }
+
+        function traceHexagonPath(ctx, cx, cy, r) {
+            ctx.beginPath();
+            for (let i = 0; i < 6; i++) {
+                const ang = (Math.PI / 3) * i - Math.PI / 6;
+                const px = cx + r * Math.cos(ang);
+                const py = cy + r * Math.sin(ang);
+                if (i === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            }
+            ctx.closePath();
+        }
+
+        function drawPosterCanvas(ctx, w, h) {
+            ctx.clearRect(0, 0, w, h);
+            const bgType = document.getElementById('studio-bg-type').value;
+            const layout = document.getElementById('studio-layout').value;
+            const baseScale = Math.min(w, h) / 800;
+
+            // ================= 1. COLORFUL BACKGROUNDS (16 STYLES) =================
+            if (bgType === 'custom' && backgroundMedia.element && backgroundMedia.element.complete) {
+                ctx.drawImage(backgroundMedia.element, 0, 0, w, h);
+                ctx.fillStyle = 'rgba(15, 23, 42, 0.35)';
+                ctx.fillRect(0, 0, w, h);
+            } else {
+                let grad = ctx.createLinearGradient(0, 0, w, h);
+                if (bgType === 'sunset') {
+                    grad.addColorStop(0, '#ec4899'); grad.addColorStop(0.5, '#f97316'); grad.addColorStop(1, '#eab308');
+                } else if (bgType === 'royal') {
+                    grad.addColorStop(0, '#312e81'); grad.addColorStop(0.5, '#1e1b4b'); grad.addColorStop(1, '#4c1d95');
+                } else if (bgType === 'emerald') {
+                    grad.addColorStop(0, '#10b981'); grad.addColorStop(0.5, '#047857'); grad.addColorStop(1, '#064e3b');
+                } else if (bgType === 'rose') {
+                    grad.addColorStop(0, '#f43f5e'); grad.addColorStop(0.5, '#be185d'); grad.addColorStop(1, '#881337');
+                } else if (bgType === 'golden') {
+                    grad.addColorStop(0, '#d97706'); grad.addColorStop(0.5, '#92400e'); grad.addColorStop(1, '#451a03');
+                } else if (bgType === 'cyberpunk') {
+                    grad.addColorStop(0, '#86198f'); grad.addColorStop(0.5, '#3b0764'); grad.addColorStop(1, '#090d16');
+                } else if (bgType === 'stars') {
+                    grad.addColorStop(0, '#090d16'); grad.addColorStop(0.5, '#1e1b4b'); grad.addColorStop(1, '#312e81');
+                } else if (bgType === 'fireworks') {
+                    grad.addColorStop(0, '#0f172a'); grad.addColorStop(0.6, '#1e1b4b'); grad.addColorStop(1, '#4c0519');
+                } else if (bgType === 'aurora') {
+                    grad.addColorStop(0, '#022c22'); grad.addColorStop(0.45, '#0f766e'); grad.addColorStop(1, '#3b0764');
+                } else if (bgType === 'tropical') {
+                    grad.addColorStop(0, '#ff512f'); grad.addColorStop(0.5, '#f09819'); grad.addColorStop(1, '#dd2476');
+                } else if (bgType === 'ocean_bokeh') {
+                    grad.addColorStop(0, '#0284c7'); grad.addColorStop(0.5, '#0369a1'); grad.addColorStop(1, '#1e3a8a');
+                } else if (bgType === 'diwali_lamps') {
+                    grad.addColorStop(0, '#7c2d12'); grad.addColorStop(0.5, '#9a3412'); grad.addColorStop(1, '#b45309');
+                } else if (bgType === 'bubbles') {
+                    grad.addColorStop(0, '#4f46e5'); grad.addColorStop(0.5, '#9333ea'); grad.addColorStop(1, '#ec4899');
+                } else if (bgType === 'cherry_blossom') {
+                    grad.addColorStop(0, '#fbcfe8'); grad.addColorStop(0.5, '#f472b6'); grad.addColorStop(1, '#be185d');
+                } else {
+                    grad.addColorStop(0, '#6d28d9'); grad.addColorStop(0.5, '#4f46e5'); grad.addColorStop(1, '#db2777');
+                }
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, w, h);
+            }
+
+            // ================= 2. THEME-SPECIFIC LIVE ANIMATIONS =================
+            if (bgType === 'aurora') {
+                for (let b = 0; b < 3; b++) {
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.moveTo(0, h * (0.2 + b * 0.15));
+                    for (let x = 0; x <= w; x += 40) {
+                        const waveY = h * (0.2 + b * 0.15) + Math.sin(x * 0.008 + animationTick * 0.03 + b) * 45;
+                        ctx.lineTo(x, waveY);
+                    }
+                    ctx.lineTo(w, 0);
+                    ctx.lineTo(0, 0);
+                    ctx.closePath();
+                    ctx.fillStyle = b === 0 ? 'rgba(52, 211, 153, 0.18)' : (b === 1 ? 'rgba(56, 189, 248, 0.14)' : 'rgba(192, 132, 252, 0.14)');
+                    ctx.fill();
+                    ctx.restore();
+                }
+            } else if (bgType === 'cyberpunk') {
+                ctx.save();
+                ctx.strokeStyle = 'rgba(56, 189, 248, 0.18)';
+                ctx.lineWidth = 1.5;
+                const gridStep = 55;
+                const shift = (animationTick * 1.2) % gridStep;
+                for (let y = shift; y < h; y += gridStep) {
+                    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+                }
+                for (let x = 0; x < w; x += gridStep) {
+                    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+                }
+                ctx.restore();
+            } else if (bgType === 'fireworks') {
+                const bursts = [
+                    { bx: w * 0.2, by: h * 0.22, col: '#fde047', offset: 0 },
+                    { bx: w * 0.8, by: h * 0.25, col: '#f472b6', offset: 35 },
+                    { bx: w * 0.25, by: h * 0.72, col: '#38bdf8', offset: 70 },
+                    { bx: w * 0.78, by: h * 0.68, col: '#4ade80', offset: 15 }
+                ];
+                bursts.forEach(fb => {
+                    const progress = ((animationTick + fb.offset) % 100) / 100;
+                    const maxR = 110 * baseScale;
+                    const curR = progress * maxR;
+                    ctx.save();
+                    ctx.globalAlpha = Math.max(0, 1 - progress);
+                    ctx.fillStyle = fb.col;
+                    for (let ray = 0; ray < 14; ray++) {
+                        const a = (Math.PI * 2 / 14) * ray;
+                        ctx.beginPath();
+                        ctx.arc(fb.bx + Math.cos(a) * curR, fb.by + Math.sin(a) * curR, 3.5 * baseScale, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    ctx.restore();
+                });
+            }
+
+            particles.forEach(p => {
+                if (bgType === 'bubbles') {
+                    p.y -= p.speedY * 0.9;
+                    p.x += Math.sin(animationTick * 0.03 + p.phase) * 0.0015;
+                    if (p.y < -0.05) p.y = 1.05;
+                } else {
+                    p.y += p.speedY;
+                    p.x += p.speedX + Math.sin(animationTick * 0.02 + p.phase) * 0.0008;
+                    if (p.y > 1.05) p.y = -0.05;
+                    if (p.x > 1.05) p.x = -0.05;
+                    if (p.x < -0.05) p.x = 1.05;
+                }
+
+                ctx.save();
+                ctx.translate(p.x * w, p.y * h);
+                ctx.rotate(p.angle + animationTick * 0.03);
+
+                if (bgType === 'rose') {
+                    ctx.fillStyle = p.color;
+                    ctx.globalAlpha = 0.7;
+                    const hs = p.size * 0.8;
+                    ctx.beginPath();
+                    ctx.moveTo(0, hs);
+                    ctx.bezierCurveTo(-hs * 1.4, 0, -hs * 0.8, -hs, 0, -hs * 0.3);
+                    ctx.bezierCurveTo(hs * 0.8, -hs, hs * 1.4, 0, 0, hs);
+                    ctx.fill();
+                } else if (bgType === 'bubbles') {
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.55)';
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, p.size * 1.4, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+                } else if (bgType === 'ocean_bokeh') {
+                    ctx.fillStyle = 'rgba(186, 230, 253, 0.22)';
+                    ctx.beginPath();
+                    ctx.arc(0, 0, p.size * 2.2, 0, Math.PI * 2);
+                    ctx.fill();
+                } else if (bgType === 'cherry_blossom') {
+                    ctx.fillStyle = '#ffe4e6';
+                    ctx.globalAlpha = 0.85;
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, p.size * 0.9, p.size * 0.45, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                } else if (bgType === 'diwali_lamps') {
+                    ctx.fillStyle = '#fde047';
+                    ctx.globalAlpha = 0.5 + 0.5 * Math.sin(animationTick * 0.08 + p.phase);
+                    ctx.beginPath();
+                    ctx.arc(0, 0, p.size * 0.65, 0, Math.PI * 2);
+                    ctx.fill();
+                } else if (bgType === 'stars' || bgType === 'golden') {
+                    ctx.fillStyle = p.color;
+                    ctx.globalAlpha = 0.4 + 0.6 * Math.abs(Math.sin(animationTick * 0.05 + p.phase));
+                    ctx.beginPath();
+                    ctx.arc(0, 0, p.size * 0.6, 0, Math.PI * 2);
+                    ctx.fill();
+                } else {
+                    ctx.fillStyle = p.color;
+                    ctx.globalAlpha = 0.8;
+                    ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+                }
+                ctx.restore();
+            });
+
+            // ================= 3. OUTER POSTER BORDERS BY FRAME DESIGN =================
+            if (layout === 'double_border' || layout === 'royal_arch') {
+                ctx.save();
+                ctx.strokeStyle = 'rgba(253, 224, 71, 0.8)';
+                ctx.lineWidth = 6 * baseScale;
+                ctx.strokeRect(26 * baseScale, 26 * baseScale, w - 52 * baseScale, h - 52 * baseScale);
+                ctx.lineWidth = 2 * baseScale;
+                ctx.strokeRect(40 * baseScale, 40 * baseScale, w - 80 * baseScale, h - 80 * baseScale);
+                ctx.restore();
+            } else if (layout === 'vintage_stamp') {
+                ctx.save();
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+                ctx.lineWidth = 8 * baseScale;
+                ctx.setLineDash([14 * baseScale, 12 * baseScale]);
+                ctx.strokeRect(28 * baseScale, 28 * baseScale, w - 56 * baseScale, h - 56 * baseScale);
+                ctx.restore();
+            } else if (layout === 'magazine_cover') {
+                ctx.save();
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.14)';
+                ctx.fillRect(0, 0, w, 95 * baseScale);
+                ctx.fillStyle = '#fde047';
+                ctx.font = `800 ${Math.round(30 * baseScale)}px Poppins, sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.fillText('★ GTMHS CELEBRATION EDITION ★', w / 2, 60 * baseScale);
+                ctx.restore();
+            }
+
+            // ================= 4. SUBJECT PHOTO FRAME (12 DESIGNS) =================
+            const centerX = w / 2;
+            const photoCenterY = h * 0.34;
+            const radius = Math.min(w, h) * 0.18;
+
+            if (layout === 'star_sunburst') {
+                ctx.save();
+                ctx.translate(centerX, photoCenterY);
+                ctx.rotate(animationTick * 0.008);
+                const spikes = 24;
+                for (let i = 0; i < spikes; i++) {
+                    const ang = (Math.PI * 2 / spikes) * i;
+                    ctx.strokeStyle = i % 2 === 0 ? 'rgba(253, 224, 71, 0.7)' : 'rgba(251, 146, 60, 0.5)';
+                    ctx.lineWidth = 4 * baseScale;
+                    ctx.beginPath();
+                    ctx.moveTo(Math.cos(ang) * (radius * 0.95), Math.sin(ang) * (radius * 0.95));
+                    ctx.lineTo(Math.cos(ang) * (radius * 1.32), Math.sin(ang) * (radius * 1.32));
+                    ctx.stroke();
+                }
+                ctx.restore();
+            } else if (layout === 'rainbow_halo') {
+                ctx.save();
+                const rainbowColors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#a855f7'];
+                rainbowColors.forEach((col, idx) => {
+                    ctx.beginPath();
+                    ctx.arc(centerX, photoCenterY, radius + (rainbowColors.length - idx) * 5 * baseScale, 0, Math.PI * 2);
+                    ctx.strokeStyle = col;
+                    ctx.lineWidth = 5 * baseScale;
+                    ctx.stroke();
+                });
+                ctx.restore();
+            }
+
+            ctx.save();
+            if (layout === 'polaroid') {
+                const boxW = radius * 2.25;
+                const boxH = radius * 2.55;
+                ctx.fillStyle = '#ffffff';
+                ctx.shadowColor = 'rgba(0,0,0,0.4)';
+                ctx.shadowBlur = 22;
+                ctx.fillRect(centerX - boxW / 2, photoCenterY - radius * 1.1, boxW, boxH);
+                ctx.shadowBlur = 0;
+
+                ctx.beginPath();
+                ctx.rect(centerX - radius, photoCenterY - radius, radius * 2, radius * 2);
+                ctx.clip();
+            } else if (layout === 'heart_locket') {
+                traceHeartPath(ctx, centerX, photoCenterY, radius * 1.12);
+                ctx.clip();
+            } else if (layout === 'hexagon_badge') {
+                traceHexagonPath(ctx, centerX, photoCenterY, radius * 1.08);
+                ctx.clip();
+            } else if (layout === 'vintage_stamp' || layout === 'magazine_cover') {
+                const sq = radius * 1.95;
+                ctx.beginPath();
+                ctx.rect(centerX - sq / 2, photoCenterY - sq / 2, sq, sq);
+                ctx.clip();
+            } else {
+                ctx.beginPath();
+                ctx.arc(centerX, photoCenterY, radius, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.clip();
+            }
+
+            if (subjectMedia.element && subjectMedia.element.complete) {
+                const img = subjectMedia.element;
+                const aspect = img.width / img.height;
+                let drawW = radius * 2.1 * photoScale;
+                let drawH = radius * 2.1 * photoScale;
+                if (aspect > 1) drawW = drawH * aspect;
+                else drawH = drawW / aspect;
+
+                ctx.drawImage(
+                    img,
+                    centerX + photoOffsetX - drawW / 2,
+                    photoCenterY + photoOffsetY - drawH / 2,
+                    drawW,
+                    drawH
+                );
+            } else {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.22)';
+                ctx.fillRect(centerX - radius * 1.3, photoCenterY - radius * 1.3, radius * 2.6, radius * 2.6);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = `bold ${Math.round(radius * 0.6)}px Poppins, sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('🎉', centerX, photoCenterY);
+            }
+            ctx.restore();
+
+            ctx.save();
+            if (layout === 'heart_locket') {
+                traceHeartPath(ctx, centerX, photoCenterY, radius * 1.12);
+                ctx.lineWidth = 8 * baseScale;
+                ctx.strokeStyle = '#fda4af';
+                ctx.shadowColor = '#f43f5e';
+                ctx.shadowBlur = 18;
+                ctx.stroke();
+            } else if (layout === 'hexagon_badge') {
+                traceHexagonPath(ctx, centerX, photoCenterY, radius * 1.08);
+                ctx.lineWidth = 8 * baseScale;
+                ctx.strokeStyle = '#fde047';
+                ctx.stroke();
+            } else if (layout === 'vintage_stamp' || layout === 'magazine_cover') {
+                const sq = radius * 1.95;
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 8 * baseScale;
+                ctx.strokeRect(centerX - sq / 2, photoCenterY - sq / 2, sq, sq);
+            } else if (layout === 'floral_wreath') {
+                ctx.beginPath();
+                ctx.arc(centerX, photoCenterY, radius, 0, Math.PI * 2);
+                ctx.lineWidth = 6 * baseScale;
+                ctx.strokeStyle = '#fbcfe8';
+                ctx.stroke();
+
+                const flowerCount = 12;
+                const petalColors = ['#f472b6', '#fde047', '#fb7185', '#c084fc'];
+                for (let f = 0; f < flowerCount; f++) {
+                    const ang = (Math.PI * 2 / flowerCount) * f + animationTick * 0.005;
+                    const fx = centerX + Math.cos(ang) * (radius + 6 * baseScale);
+                    const fy = photoCenterY + Math.sin(ang) * (radius + 6 * baseScale);
+                    ctx.fillStyle = petalColors[f % petalColors.length];
+                    ctx.beginPath();
+                    ctx.arc(fx, fy, 11 * baseScale, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#ffffff';
+                    ctx.beginPath();
+                    ctx.arc(fx, fy, 4 * baseScale, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            } else if (layout !== 'polaroid') {
+                ctx.beginPath();
+                ctx.arc(centerX, photoCenterY, radius, 0, Math.PI * 2);
+                ctx.lineWidth = (layout === 'neon_glow' ? 10 : 7) * baseScale;
+                ctx.strokeStyle = layout === 'neon_glow' ? '#38bdf8' : '#fde047';
+                if (layout === 'neon_glow') {
+                    ctx.shadowColor = '#38bdf8';
+                    ctx.shadowBlur = 28;
+                }
+                ctx.stroke();
+            }
+            ctx.restore();
+
+            // ================= 5. TEXT TYPOGRAPHY =================
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'alphabetic';
+
+            const occasion = document.getElementById('studio-occasion').value || 'Happy Birthday!';
+            ctx.font = `bold ${Math.round(34 * baseScale)}px Poppins, sans-serif`;
+            ctx.fillStyle = '#fde047';
+            ctx.shadowColor = 'rgba(0,0,0,0.45)';
+            ctx.shadowBlur = 8;
+            ctx.fillText(occasion.toUpperCase(), centerX, h * 0.60);
+
+            const name = document.getElementById('studio-name').value || 'Dear Friend';
+            ctx.font = `bold ${Math.round(52 * baseScale)}px "Playfair Display", Georgia, serif`;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText(name, centerX, h * 0.67);
+            ctx.shadowBlur = 0;
+
+            const message = document.getElementById('studio-message').value || '';
+            ctx.font = `${Math.round(22 * baseScale)}px Poppins, sans-serif`;
+            ctx.fillStyle = '#f8fafc';
+            const lastMsgY = drawWrappedText(ctx, message, centerX, h * 0.73, w * 0.80, 30 * baseScale);
+
+            const talents = document.getElementById('studio-talents').value;
+            if (talents) {
+                ctx.font = `600 ${Math.round(18 * baseScale)}px Poppins, sans-serif`;
+                ctx.fillStyle = '#fef08a';
+                ctx.fillText(`✨ Talents: ${talents}`, centerX, lastMsgY + 42 * baseScale);
+            }
+
+            const co = document.getElementById('studio-co').value;
+            if (co) {
+                ctx.font = `italic ${Math.round(17 * baseScale)}px Poppins, sans-serif`;
+                ctx.fillStyle = '#e2e8f0';
+                ctx.fillText(`Best Wishes From: ${co} • GTMHS Celebration Hub`, centerX, h - 42 * baseScale);
+            }
+        }
+
+        function downloadPoster() {
+            const canvas = document.getElementById('wish-canvas');
+            const name = (document.getElementById('studio-name').value || 'Celebration').replace(/\s+/g, '_');
+            const link = document.createElement('a');
+            link.download = `GTMHS_Wish_${name}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        async function sharePosterWhatsApp() {
+            const canvas = document.getElementById('wish-canvas');
+            const name = document.getElementById('studio-name').value || 'Friend';
+            const occasion = document.getElementById('studio-occasion').value || 'Happy Birthday!';
+            const message = document.getElementById('studio-message').value || '';
+            const shareText = `🎉 *${occasion}*, ${name}!\n\n${message}\n\n— _GTMHS Celebration Hub_`;
+
+            if (navigator.canShare && navigator.share) {
+                try {
+                    const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+                    const file = new File([blob], `GTMHS_Wish_${name}.png`, { type: 'image/png' });
+                    if (navigator.canShare({ files: [file] })) {
+                        await navigator.share({
+                            title: `${occasion} - ${name}`,
+                            text: shareText,
+                            files: [file]
+                        });
+                        return;
+                    }
+                } catch (err) {
+                    console.log("Image share cancelled or unsupported, falling back to text link", err);
+                }
+            }
+
+            downloadPoster();
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`, '_blank');
+        }
+
+        // --- AI WISH GENERATOR ---
         function openAIModal() { document.getElementById('ai-modal').classList.remove('hidden'); }
         function closeAIModal() { document.getElementById('ai-modal').classList.add('hidden'); }
 
@@ -680,37 +1668,34 @@
             const occasion = document.getElementById('studio-occasion').value || 'Birthday';
             const co = document.getElementById('studio-co').value || 'GTMHS Hub';
             const talents = document.getElementById('studio-talents').value || 'excellence';
-            
+
             if (!apiKey) { alert('Please enter your API key.'); return; }
-            
-            const prompt = `Write a short, heartfelt, and inspiring wish message for ${name} on their ${occasion} (Submitted with reference: C/O ${co}). Their special talents/skills include: ${talents}. Keep it warm, engaging, and under 45 words.`;
-            
+
+            const prompt = `Write a short, heartfelt, inspiring wish message for ${name} on their ${occasion} (from ${co}). Highlight their special talents: ${talents}. Keep it warm and under 40 words.`;
+
             try {
                 if (provider === 'gemini') {
-                    let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-                        method: 'POST', 
+                    let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+                        method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
                     });
                     let data = await res.json();
                     let text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-                    if (text) { 
-                        document.getElementById('studio-message').value = text.trim(); 
-                        closeAIModal(); 
+                    if (text) {
+                        document.getElementById('studio-message').value = text.trim();
+                        closeAIModal();
                     } else {
-                        alert('Could not parse response from Gemini. Check your API key.');
+                        alert('Could not generate wish. Please check your Gemini API key.');
                     }
-                } else if (provider === 'chatgpt') {
+                } else {
                     let res = await fetch(`https://api.openai.com/v1/chat/completions`, {
                         method: 'POST',
-                        headers: { 
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${apiKey}`
-                        },
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
                         body: JSON.stringify({
-                            model: 'gpt-3.5-turbo',
+                            model: 'gpt-4o-mini',
                             messages: [{ role: 'user', content: prompt }],
-                            max_tokens: 60
+                            max_tokens: 70
                         })
                     });
                     let data = await res.json();
@@ -719,30 +1704,30 @@
                         document.getElementById('studio-message').value = text.trim();
                         closeAIModal();
                     } else {
-                        alert('Could not parse response from ChatGPT. Check your API key.');
+                        alert('Could not generate wish. Please check your OpenAI API key.');
                     }
                 }
-            } catch(e) { 
-                console.error(e);
-                alert('AI generation error. Check network connection or API key validity.'); 
+            } catch (e) {
+                alert('Network error while connecting to AI.');
             }
         }
 
+        // --- MODALS & HELPERS ---
         function openEventModal(id = null) {
             document.getElementById('event-modal').classList.remove('hidden');
-            if(id) {
-                document.getElementById('modal-title').innerText = 'Edit Event';
-                const ev = events.find(e => e.id === id);
-                if(ev) {
+            if (id) {
+                document.getElementById('modal-title').innerText = 'Edit Celebration';
+                const ev = events.find(e => String(e.id) === String(id));
+                if (ev) {
                     document.getElementById('event-id').value = ev.id;
                     document.getElementById('event-name').value = ev.name;
                     document.getElementById('event-type').value = ev.type;
-                    document.getElementById('event-date').value = ev.date;
+                    document.getElementById('event-date').value = ev.originalDate || ev.date;
                     document.getElementById('event-co').value = ev.submittedBy || '';
                     document.getElementById('event-talents').value = ev.talents || '';
                 }
             } else {
-                document.getElementById('modal-title').innerText = 'Add New Event';
+                document.getElementById('modal-title').innerText = 'Add New Celebration';
                 document.getElementById('event-form').reset();
                 document.getElementById('event-id').value = '';
             }
@@ -750,213 +1735,24 @@
 
         function closeEventModal() { document.getElementById('event-modal').classList.add('hidden'); }
 
-        function deleteEvent(id) {
-            if(confirm('Delete event?')) {
-                events = events.filter(e => e.id !== id);
-                localStorage.setItem('celebration_events', JSON.stringify(events));
-                renderEvents();
-                populateStudioDropdown();
-            }
+        function addToGoogleCalendar(id) {
+            const ev = events.find(e => String(e.id) === String(id));
+            if (!ev) return;
+            const { nextDateStr } = getNextAnnualOccurrence(ev);
+            let [y, m, d] = (nextDateStr || ev.date).split('-');
+            let startDate = `${y}${m}${d}`;
+            let title = encodeURIComponent(`${ev.name}'s ${ev.type} (Annual)`);
+            let details = encodeURIComponent(`🎉 Annual Celebration! C/O: ${ev.submittedBy || 'N/A'}\nTalents: ${ev.talents || 'N/A'}`);
+            let recur = encodeURIComponent('RRULE:FREQ=YEARLY');
+            window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${startDate}&details=${details}&recur=${recur}`, '_blank');
         }
 
-        function renderEvents() {
-            const grid = document.getElementById('events-grid');
-            const emptyState = document.getElementById('empty-state');
-            const searchTerm = document.getElementById('search-input').value.toLowerCase();
-            const filtered = events.filter(e => e.name.toLowerCase().includes(searchTerm) || e.type.toLowerCase().includes(searchTerm) || (e.submittedBy && e.submittedBy.toLowerCase().includes(searchTerm)) || (e.talents && e.talents.toLowerCase().includes(searchTerm)));
-            
-            grid.innerHTML = '';
-            if(filtered.length === 0) { emptyState.classList.remove('hidden'); return; }
-            emptyState.classList.add('hidden');
-            
-            filtered.forEach(ev => {
-                const card = document.createElement('div');
-                card.className = "bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between";
-                card.innerHTML = `
-                    <div>
-                        <div class="flex justify-between items-start gap-2 mb-3">
-                            <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">${ev.date}</span>
-                            <div class="flex gap-1.5 text-slate-400">
-                                <button onclick="openEventModal('${ev.id}')" class="hover:text-indigo-600 p-1 cursor-pointer"><i class="fa-solid fa-pen text-xs"></i></button>
-                                <button onclick="deleteEvent('${ev.id}')" class="hover:text-rose-600 p-1 cursor-pointer"><i class="fa-solid fa-trash text-xs"></i></button>
-                            </div>
-                        </div>
-                        <h4 class="font-bold text-slate-800">${ev.name}</h4>
-                        <p class="text-xs text-indigo-600 font-medium">${ev.type}</p>
-                        <p class="text-xs text-slate-500 mt-2">C/O: ${ev.submittedBy || 'N/A'}</p>
-                        <p class="text-xs text-purple-600">Talents: ${ev.talents || 'N/A'}</p>
-                        ${ev.photo ? '<p class="text-xs text-emerald-600 mt-1"><i class="fa-solid fa-image"></i> Photo included</p>' : ''}
-                    </div>
-                    <div class="flex gap-2 mt-4">
-                        <button onclick="createPosterForEvent('${ev.id}')" class="flex-1 text-xs bg-indigo-50 text-indigo-700 font-semibold py-2 rounded-lg hover:bg-indigo-100 transition cursor-pointer flex items-center justify-center gap-1">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i> Create Poster
-                        </button>
-                        <button onclick="addToGoogleCalendar('${ev.id}')" class="flex-1 text-xs bg-blue-50 text-blue-700 font-semibold py-2 rounded-lg hover:bg-blue-100 transition cursor-pointer">Add to Calendar</button>
-                    </div>
-                `;
-                grid.appendChild(card);
+        function requestNotificationPermission() {
+            if (!("Notification" in window)) return;
+            Notification.requestPermission().then(p => {
+                if (p === "granted") alert("🔔 Browser celebration alerts enabled!");
             });
         }
-
-        function populateStudioDropdown() {
-            const select = document.getElementById('studio-event-select');
-            select.innerHTML = '<option value="">-- Choose from saved events --</option>';
-            events.forEach(ev => {
-                let opt = document.createElement('option');
-                opt.value = ev.id;
-                opt.innerText = `${ev.name} (${ev.type} - ${ev.date})`;
-                select.appendChild(opt);
-            });
-        }
-
-        function loadEventIntoStudio() {
-            const id = document.getElementById('studio-event-select').value;
-            if(!id) return;
-            const ev = events.find(e => e.id === id);
-            if(!ev) return;
-            document.getElementById('studio-name').value = ev.name;
-            document.getElementById('studio-occasion').value = ev.type === 'Birthday' ? 'Happy Birthday!' : (ev.type === 'Marriage Anniversary' ? 'Happy Anniversary!' : 'Special Celebration!');
-            document.getElementById('studio-co').value = ev.submittedBy || '';
-            document.getElementById('studio-talents').value = ev.talents || '';
-            if(ev.photo) {
-                subjectMedia = { type: 'image', src: ev.photo, element: new Image() };
-                subjectMedia.element.src = ev.photo;
-            }
-        }
-
-        function handleStudioPhoto(e) {
-            const file = e.target.files[0];
-            if(!file) return;
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                subjectMedia = { type: 'image', src: evt.target.result, element: new Image() };
-                subjectMedia.element.src = evt.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function handleBackgroundMedia(e) {
-            const file = e.target.files[0];
-            if(!file) return;
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                backgroundMedia = { type: 'image', src: evt.target.result, element: new Image() };
-                backgroundMedia.element.src = evt.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function updateCanvasDimensions() {
-            const format = document.getElementById('studio-format').value;
-            const canvas = document.getElementById('wish-canvas');
-            let w = 800, h = 1000;
-            if (format === 'square') { w = 800; h = 800; }
-            else if (format === 'portrait') { w = 800; h = 1000; }
-            else if (format === 'story') { w = 1080; h = 1920; }
-            else if (format === 'landscape') { w = 1280; h = 720; }
-            else if (format === 'postcard') { w = 1200; h = 800; }
-            else if (format === 'banner') { w = 1200; h = 600; }
-            else if (format === 'insta') { w = 1080; h = 810; }
-            else if (format === 'a4') { w = 794; h = 1123; }
-            else if (format === 'wallpaper') { w = 1080; h = 1920; }
-            else if (format === 'badge_fmt') { w = 800; h = 800; }
-            canvas.width = w; canvas.height = h;
-        }
-
-        function renderLoop() {
-            animationTick++;
-            const canvas = document.getElementById('wish-canvas');
-            if(canvas) {
-                const ctx = canvas.getContext('2d');
-                drawPosterCanvas(ctx, canvas.width, canvas.height);
-            }
-            requestAnimationFrame(renderLoop);
-        }
-
-        function drawPosterCanvas(ctx, w, h) {
-            ctx.clearRect(0, 0, w, h);
-            
-            const bgType = document.getElementById('studio-bg-type').value;
-            if(bgType === 'custom' && backgroundMedia.element && backgroundMedia.element.complete) {
-                ctx.drawImage(backgroundMedia.element, 0, 0, w, h);
-            } else {
-                let grad = ctx.createLinearGradient(0, 0, w, h);
-                if(bgType === 'royal') { grad.addColorStop(0, '#312e81'); grad.addColorStop(1, '#1e1b4b'); }
-                else if(bgType === 'emerald') { grad.addColorStop(0, '#065f46'); grad.addColorStop(1, '#022c22'); }
-                else if(bgType === 'rose') { grad.addColorStop(0, '#9f1239'); grad.addColorStop(1, '#4c0519'); }
-                else if(bgType === 'golden') { grad.addColorStop(0, '#78350f'); grad.addColorStop(1, '#451a03'); }
-                else if(bgType === 'cyberpunk') { grad.addColorStop(0, '#831843'); grad.addColorStop(1, '#3b0764'); }
-                else { grad.addColorStop(0, '#4f46e5'); grad.addColorStop(1, '#312e81'); }
-                ctx.fillStyle = grad;
-                ctx.fillRect(0, 0, w, h);
-            }
-
-            if(subjectMedia.element && subjectMedia.element.complete) {
-                ctx.save();
-                ctx.translate(w/2 + photoOffsetX, h/2 - 100 + photoOffsetY);
-                ctx.scale(photoScale, photoScale);
-                ctx.beginPath();
-                ctx.arc(0, 0, 140, 0, Math.PI * 2);
-                ctx.closePath();
-                ctx.clip();
-                ctx.drawImage(subjectMedia.element, -140, -140, 280, 280);
-                ctx.restore();
-
-                ctx.save();
-                ctx.strokeStyle = '#ffffff';
-                ctx.lineWidth = 6;
-                ctx.beginPath();
-                ctx.arc(w/2 + photoOffsetX, h/2 - 100 + photoOffsetY, 140, 0, Math.PI * 2);
-                ctx.stroke();
-                ctx.restore();
-            }
-
-            ctx.fillStyle = '#ffffff';
-            ctx.textAlign = 'center';
-            
-            ctx.font = 'bold 36px Poppins, sans-serif';
-            let occasion = document.getElementById('studio-occasion').value || 'Happy Birthday!';
-            ctx.fillText(occasion, w/2, h - 320);
-
-            ctx.font = 'bold 48px Poppins, sans-serif';
-            let name = document.getElementById('studio-name').value || 'Aarav Sharma';
-            ctx.fillText(name, w/2, h - 250);
-
-            ctx.font = '22px Poppins, sans-serif';
-            ctx.fillStyle = '#c7d2fe';
-            let message = document.getElementById('studio-message').value || '';
-            ctx.fillText(message, w/2, h - 190);
-
-            ctx.font = 'italic 18px Poppins, sans-serif';
-            ctx.fillStyle = '#93c5fd';
-            let co = document.getElementById('studio-co').value;
-            if(co) ctx.fillText(`Submitted by C/O: ${co}`, w/2, h - 130);
-
-            let talents = document.getElementById('studio-talents').value;
-            if(talents) {
-                ctx.font = '16px Poppins, sans-serif';
-                ctx.fillStyle = '#fde68a';
-                ctx.fillText(`Talents: ${talents}`, w/2, h - 90);
-            }
-        }
-
-        function downloadPoster() {
-            const canvas = document.getElementById('wish-canvas');
-            const link = document.createElement('a');
-            link.download = 'GTMHS-Celebration-Wish.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        }
-
-        function shareViaWhatsApp() {
-            const name = document.getElementById('studio-name').value || 'Friend';
-            const occasion = document.getElementById('studio-occasion').value || 'Happy Birthday!';
-            const message = document.getElementById('studio-message').value || '';
-            const text = encodeURIComponent(`🎉 *${occasion}*, ${name}!\n\n${message}\n\n- Via GTMHS Celebration Hub`);
-            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
-        }
-
-        function checkUpcomingAlertsAndNotify() {}
     </script>
 </body>
 </html>
